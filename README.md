@@ -1,1 +1,3 @@
 # SL_Otus_basics
+
+Just for fun or maybe not...
