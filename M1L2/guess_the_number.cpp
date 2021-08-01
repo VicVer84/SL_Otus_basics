@@ -14,11 +14,9 @@ int MakeGuess(int target_value){
 		cnt++;
 		if (current_value < target_value) {
 			std::cout << "greater than " << current_value << std::endl;
-		}
-		else if (current_value > target_value) {
+		} else if (current_value > target_value) {
 			std::cout << "less than " << current_value << std::endl;
-		}
-		else {
+		} else {
 			std::cout << "you win!" << std::endl;
 			break;
 		}
