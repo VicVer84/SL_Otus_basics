@@ -4,9 +4,8 @@ project(05.homework)
 
 add_executable(
 	guess_the_number	
-	guess_the_number.cpp
+	GuessTheNumber.cpp
 	GameParameters.cpp
-	GameParameters.h
 )
 set_target_properties(guess_the_number PROPERTIES
     CXX_STANDARD 17
