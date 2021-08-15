@@ -9,60 +9,35 @@
 Lexer::Token Lexer::next_token() {
     for (;;) {
         switch (state_) {
-        case State::End:
-            if (lasttoken_ != Token::Number && lasttoken_ != Token::Name && lasttoken_ != Token::Rbrace) {
-                throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Expression should always end with Name, Number or Brace");
-            }
-            if (paranthesis_ != 0) {
-                throw std::invalid_argument("Something wrong with paranthesis balance");
-            }
-            return Token::End;
+        case State::End:            
+            return TokenValidation(Token::End);
         case State::ReadNumber:
-            try { return ReadNumber(); 
-            } catch(...) {
-                throw;
-            }
+            return ReadNumber(); 
         case State::ReadName:
-            try {
-                return ReadName();
-            } catch (...) {
-                throw;
-            }
+            return ReadName();
         case State::Empty:
             if (end()) {
                 state_ = State::End;
-                return Token::End;
+                return TokenValidation(Token::End);
             }
             if (std::isspace(ch_)) {
                 next_char();
                 break;
             }
-            if (isoperator(ch_)) {
-                if (lasttoken_ != Token::Number && lasttoken_ != Token::Name && lasttoken_ != Token::Rbrace) {
-                    throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Operator should always follow Number or Name");
-                }
+            if (isoperator(ch_)) {                
                 operator_ = ch_;
                 next_char();
-                lasttoken_ = Token::Operator;
-                return Token::Operator;
+                return TokenValidation(Token::Operator);
             }
-            if (ch_ == '(') {
-                if (lasttoken_ != Token::Begin && lasttoken_ != Token::Lbrace && lasttoken_ != Token::Operator) {
-                    throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Left brace should be on first position othewise follow lbrace or operator");
-                }
+            if (ch_ == '(') {                
                 next_char();
-                lasttoken_ = Token::Lbrace;
                 paranthesis_++;
-                return Token::Lbrace;
+                return TokenValidation(Token::Lbrace);
             }
-            if (ch_ == ')') {
-                if (lasttoken_ != Token::Number && lasttoken_ != Token::Name && lasttoken_ != Token::Rbrace) {
-                    throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Left brace should be on first position othewise follow lbrace or operator");
-                }
+            if (ch_ == ')') {                
                 next_char();
-                lasttoken_ = Token::Rbrace;
                 paranthesis_--;
-                return Token::Rbrace;
+                return TokenValidation(Token::Rbrace);
             }
             if (std::isdigit(ch_)) {
                 number_ = ch_ - '0';
@@ -87,15 +62,8 @@ std::string Lexer::GetErrorPos() {
 
 Lexer::Token Lexer::ReadNumber() {
     if (end()) {
-        state_ = State::End;
-        if (lasttoken_ != Token::Begin && lasttoken_ != Token::Operator && lasttoken_ != Token::Lbrace) {
-            throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Number should be the first member of expression otherwise follow operator or leftbrace");
-        }
-        lasttoken_ = Token::Number;
-        return Token::Number;
-    }
-    if (lasttoken_ != Token::Begin && lasttoken_ != Token::Operator && lasttoken_ != Token::Lbrace) {
-        throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Number should be the first member of expression otherwise follow operator or leftbrace");
+        state_ = State::End;        
+        return TokenValidation(Token::Number);
     }
     if (std::isdigit(ch_)) {
         number_ = 10 * number_ + (ch_ - '0');
@@ -103,27 +71,68 @@ Lexer::Token Lexer::ReadNumber() {
         next_char();
     }
     state_ = State::Empty;
-    lasttoken_ = Token::Number;
-    return Token::Number;
+    return TokenValidation(Token::Number);
 }
 
 Lexer::Token Lexer::ReadName() {
     if (end()) {
-        state_ = State::End;
-        if (lasttoken_ != Token::Begin && lasttoken_ != Token::Operator && lasttoken_ != Token::Lbrace) {
-            throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Named member should be the first member of expression otherwise follow operator or leftbrace.");
-        }
-        lasttoken_ = Token::Name;
-        return Token::Name;
-    }
-    if (lasttoken_ != Token::Begin && lasttoken_ != Token::Operator && lasttoken_ != Token::Lbrace) {
-        throw std::invalid_argument("Input error in position (" + GetErrorPos() + "): Named member should be the first member of expression otherwise follow operator or leftbrace.");
-    }
+        state_ = State::End;        
+        return TokenValidation(Token::Name);;
+    }    
     if (std::isalpha(ch_) || std::isdigit(ch_)) {
         name_ += ch_;
         next_char();
     }
     state_ = State::Empty;
-    lasttoken_ = Token::Name;
-    return Token::Name;
+    return TokenValidation(Token::Name);
+}
+
+Lexer::Token Lexer::TokenValidation(Lexer::Token token) {
+    switch (token) {
+    case Token::Number:
+        if (lasttoken_ != Token::Begin && lasttoken_ != Token::Operator && lasttoken_ != Token::Lbrace) {
+            status = 1;
+            error = "Input error in position (" + GetErrorPos() + "): Number should be the first member of expression otherwise follow operator or leftbrace";
+        }        
+        break;
+    case Token::Name:
+        if (lasttoken_ != Token::Begin && lasttoken_ != Token::Operator && lasttoken_ != Token::Lbrace) {
+            status = 1;
+            error = "Input error in position (" + GetErrorPos() + "): Named member should be the first member of expression otherwise follow operator or leftbrace.";
+        }
+        break;
+    case Token::Operator:
+        if (lasttoken_ != Token::Number && lasttoken_ != Token::Name && lasttoken_ != Token::Rbrace) {
+            status = 1;
+            error = "Input error in position (" + GetErrorPos() + "): Operator should always follow Number or Name";
+        }
+        break;
+    case Token::Lbrace:
+        if (lasttoken_ != Token::Begin && lasttoken_ != Token::Lbrace && lasttoken_ != Token::Operator) {
+            status = 1;
+            error = "Input error in position (" + GetErrorPos() + "): Left brace should be on first position othewise follow lbrace or operator";
+        }
+        break;
+    case Token::Rbrace:
+        if (lasttoken_ != Token::Number && lasttoken_ != Token::Name && lasttoken_ != Token::Rbrace) {
+            status = 1;
+            error = "Input error in position (" + GetErrorPos() + "): Right brace should follow Number, Name or Right brace";
+        }
+        break;
+    case Token::End:
+        if (lasttoken_ != Token::Number && lasttoken_ != Token::Name && lasttoken_ != Token::Rbrace) {
+            status = 1;
+            error = "Input error in position (" + GetErrorPos() + "): Expression should always end with Name, Number or Brace";
+        }
+        if (paranthesis_ != 0) {
+            status = 1;
+            error = "Something wrong with paranthesis balance";
+        }
+    }
+    if (status == 1) {
+        return Token::Error;
+    } else {
+        lasttoken_ = token;
+        return token;
+    }
 }

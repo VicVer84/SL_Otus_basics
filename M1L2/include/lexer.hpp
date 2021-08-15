@@ -16,6 +16,7 @@ class Lexer {
         Lbrace,
         Rbrace,
         Name,
+        Error
     };
 
     explicit Lexer(std::istream &in);
@@ -32,12 +33,17 @@ class Lexer {
 
     std::string get_name() const { return name_; }
 
+    bool GetStatus() const { return status; };
+
+    std::string GetError() const { return error; }
+
+
   protected:
     bool isbrace(char ch) const;
     bool isoperator(char ch) const;
     Token ReadNumber();
     Token ReadName();
-    
+    Lexer::Token TokenValidation(Lexer::Token token);
 
   private:
     enum class State {
@@ -58,6 +64,8 @@ class Lexer {
     char ch_;
     std::istream &in_;
     int paranthesis_;
+    bool status;
+    std::string error;
 };
 
 inline Lexer::Lexer(std::istream &in)
@@ -65,6 +73,7 @@ inline Lexer::Lexer(std::istream &in)
     , lasttoken_(Token::Begin)
     , number_(0)
     , paranthesis_(0)
+    , status(0)
     , in_(in) {
     next_char();
 }

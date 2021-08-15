@@ -11,12 +11,7 @@ using Token = Lexer::Token;
 ASTNode *Parser::parse() { return expr(); }
 
 void Parser::next_token() {
-    try {
-        tok_ = lexer_.next_token();
-    } catch (...) {
-        throw;
-    }
-
+    tok_ = lexer_.next_token();
 }
 
 ASTNode *Parser::expr() {
@@ -43,6 +38,8 @@ ASTNode *Parser::expr() {
             case Token::Rbrace: {
                 return root;
             }
+            case Token::Error:
+                return new ASTNode(lexer_.GetError());
             default:
                 return root;
         }
@@ -79,12 +76,8 @@ ASTNode *Parser::term() {
 ASTNode *Parser::prim() {
     // parse numbers and names
     ASTNode *node = nullptr;
-    try {
-        next_token();
-    } catch (std::invalid_argument e) {
-        throw;
-    }
-    
+    next_token();
+     
     switch (tok_) {
         case Token::Number:
             node = new Number(lexer_.get_number());
@@ -99,10 +92,6 @@ ASTNode *Parser::prim() {
         default:
             break;
     }
-    try {
-        next_token();
-    } catch (std::invalid_argument e) {
-        throw;
-    }
+    next_token();
     return node;
 }
