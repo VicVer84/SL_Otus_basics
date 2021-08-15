@@ -9,6 +9,7 @@
 class Lexer {
   public:
     enum class Token {
+        Begin,
         Number,
         Operator,
         End,
@@ -33,7 +34,6 @@ class Lexer {
 
   protected:
     bool isbrace(char ch) const;
-
     bool isoperator(char ch) const;
 
   private:
@@ -47,6 +47,7 @@ class Lexer {
     bool end() const;
 
     State state_;
+    Token lasttoken_;
     std::string name_;
     int number_;
     std::string operator_;
@@ -56,6 +57,7 @@ class Lexer {
 
 inline Lexer::Lexer(std::istream &in)
     : state_(State::Empty)
+    , lasttoken_(Token::Begin)
     , number_(0)
     , in_(in) {
     next_char();
