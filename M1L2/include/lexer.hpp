@@ -35,6 +35,9 @@ class Lexer {
   protected:
     bool isbrace(char ch) const;
     bool isoperator(char ch) const;
+    Token ReadNumber();
+    Token ReadName();
+    
 
   private:
     enum class State {
@@ -45,6 +48,7 @@ class Lexer {
     };
     char next_char();
     bool end() const;
+    std::string GetErrorPos();
 
     State state_;
     Token lasttoken_;
@@ -53,12 +57,14 @@ class Lexer {
     std::string operator_;
     char ch_;
     std::istream &in_;
+    int paranthesis_;
 };
 
 inline Lexer::Lexer(std::istream &in)
     : state_(State::Empty)
     , lasttoken_(Token::Begin)
     , number_(0)
+    , paranthesis_(0)
     , in_(in) {
     next_char();
 }

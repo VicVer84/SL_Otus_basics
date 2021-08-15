@@ -21,7 +21,14 @@ int main() {
     Lexer lexer(std::cin);
     Parser parser(lexer);
 
-    ASTNode *ast = parser.parse();
+    ASTNode* ast;
+    try {
+        ast = parser.parse();
+    } catch (const std::invalid_argument e) {
+        std::cout << e.what();
+        return 1;
+    }
+    
     if (ast) {
          ast->print(std::cout);
     }
