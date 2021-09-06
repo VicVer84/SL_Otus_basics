@@ -3,16 +3,8 @@
 
 
 #include <iostream>
-#include <memory>
 
 #include "astnode.hpp"
-#include "parser.hpp"
-#include "astNodeNumber.hpp"
-#include "astNodeAdd.hpp"
-#include "astNodeSub.hpp"
-#include "astNodeMul.hpp"
-#include "astNodeDiv.hpp"
-#include "astNodeVar.hpp"
 #include "lexer.hpp"
 #include "parser.hpp"
 
