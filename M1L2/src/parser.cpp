@@ -35,9 +35,6 @@ ASTNode *Parser::expr() {
                 }
                 break;
             }
-            case Token::Rbrace: {
-                return root;
-            }
             case Token::Error:
                 return new ASTNode(lexer_.GetError());
             default:
@@ -75,9 +72,8 @@ ASTNode *Parser::term() {
 
 ASTNode *Parser::prim() {
     // parse numbers and names
-    ASTNode *node = nullptr;
     next_token();
-     
+    ASTNode* node = brace();
     switch (tok_) {
         case Token::Number:
             node = new Number(lexer_.get_number());
@@ -86,12 +82,22 @@ ASTNode *Parser::prim() {
             // Implement Variable class and uncomment this line
             node = new Variable(lexer_.get_name());        
             break;
-        case Token::Lbrace:
-            node = expr();
-            break;        
         default:
             break;
     }
     next_token();
+    return node;
+}
+
+ASTNode* Parser::brace() {
+    // parse braces
+    ASTNode* node = nullptr;
+    switch (tok_) {
+        case Token::Lbrace:
+            node = expr();
+            break;
+        default:
+            break; 
+    }
     return node;
 }

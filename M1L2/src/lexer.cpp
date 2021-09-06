@@ -65,7 +65,7 @@ Lexer::Token Lexer::ReadNumber() {
         state_ = State::End;        
         return TokenValidation(Token::Number);
     }
-    if (std::isdigit(ch_)) {
+    while (std::isdigit(ch_)) {
         number_ = 10 * number_ + (ch_ - '0');
         state_ = State::ReadNumber;
         next_char();
@@ -79,7 +79,7 @@ Lexer::Token Lexer::ReadName() {
         state_ = State::End;        
         return TokenValidation(Token::Name);;
     }    
-    if (std::isalpha(ch_) || std::isdigit(ch_)) {
+    while (std::isalpha(ch_) || std::isdigit(ch_)) {
         name_ += ch_;
         next_char();
     }

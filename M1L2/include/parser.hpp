@@ -8,7 +8,7 @@
 class Parser {
   public:
     explicit Parser(Lexer &lexer)
-        : lexer_(lexer) {}
+        : lexer_(lexer), tok_(Lexer::Token::Begin) {}
 
     Parser(const Parser &other) = delete;
 
@@ -21,7 +21,7 @@ class Parser {
   private:
     void next_token();
 
-    //ASTNode *brace();
+    ASTNode *brace();
 
     ASTNode *expr();
 
