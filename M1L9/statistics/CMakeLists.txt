@@ -9,11 +9,15 @@ add_executable(statistics
 				Max.cpp
 				Mean.cpp
 				Min.cpp
-				Std.cpp
+				Pct90.cpp
+				Pct95.cpp
+				Std.cpp				
 				IStatistics.h
 				Max.h
 				Mean.h
 				Min.h
+				Pct90.h
+				Pct95.cpp
 				Std.h
 				)
 set_target_properties(statistics PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)

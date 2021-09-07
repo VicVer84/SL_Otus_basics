@@ -1,5 +1,4 @@
 #include "Std.h"
-#include <iostream>
 
 void Std::update(double next) {
 	v.push_back(next);
@@ -19,5 +18,5 @@ double Std::eval() const {
 }
 
 const char * Std::name() const {
-	return "min";
+	return "Std";
 }
