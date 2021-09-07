@@ -6,6 +6,9 @@ void Pct95::update(double next) {
 }
 
 double Pct95::eval() const {
+	if(v.size() == 0) {
+		return 0;
+	}
 	size_t size = v.size();
 	size_t idxK = P * (size - 1) / 100;
 	size_t idxAlphaN = P * size / 100;

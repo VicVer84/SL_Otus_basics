@@ -5,6 +5,9 @@ void Std::update(double next) {
 }
 
 double Std::eval() const {
+	if(v.size() == 0) {
+		return 0;
+	}
 	double x = std::accumulate( v.begin(), v.end(), 0.0) / v.size();
 
 	double sum = 0;

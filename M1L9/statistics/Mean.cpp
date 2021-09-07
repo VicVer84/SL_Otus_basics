@@ -6,7 +6,11 @@ void Mean::update(double next) {
 }
 
 double Mean::eval() const {
-	return sum / cnt;
+	if(cnt > 0) {
+		return sum / cnt;
+	} else {
+		return 0;
+	}
 }
 
 const char * Mean::name() const {
