@@ -1,16 +1,13 @@
 #include "Mean.h"
+#include <iostream>
 
-void Mean::update(double next) {
-	sum += next;
+void Mean::update(double next) {	
+	mean = mean / (cnt+1) * cnt + next / (cnt+1);
 	cnt++;
 }
 
 double Mean::eval() const {
-	if(cnt > 0) {
-		return sum / cnt;
-	} else {
-		return 0;
-	}
+	return mean;
 }
 
 const char * Mean::name() const {

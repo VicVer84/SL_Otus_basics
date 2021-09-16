@@ -6,7 +6,7 @@
 
 class Mean : public IStatistics {
 public:
-	Mean() : sum(0), cnt(0) {}
+	Mean() : mean(0), cnt(0) {}
 
 	void update(double next) override;
 
@@ -15,6 +15,6 @@ public:
 	const char* name() const override;
 
 private:
-	double sum;
+	double mean;
 	int cnt;
 };
