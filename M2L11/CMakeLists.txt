@@ -14,30 +14,21 @@ FetchContent_MakeAvailable(googletest)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
+#target_include_directories(TestMyVector PRIVATE include)
+
 add_executable(TestMyVector
     TestMyVector.cpp
 	MyVector.h
 )
 
-target_include_directories(TestMyVector PRIVATE include)
+add_executable(Test
+    Test.cpp
+	MyVector.h
+)
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
-    CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(TestMyVector PRIVATE 
-        -g
-        -Wall
-        -Wextra
-        -Werror
-        -pedantic
-    )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(TestMyVector PRIVATE
-        /EHsc
-        /W4
-        /WX
-    )
-endif()
+target_link_libraries(TestMyVector gtest_main)
 
-target_link_libraries(gtest_main)
+
 
 set_target_properties(TestMyVector PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(Test PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
