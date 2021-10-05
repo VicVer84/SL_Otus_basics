@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Iterator.h"
+//#include "Iterator.h"
 
 #include <cstdlib>
 #include <cstring>
@@ -12,29 +12,48 @@ public:
     
     explicit MyVector(size_t size) : data_(new T[size]), current_(size), end_(size) {
     } 
-    ~MyVector(){
+    
+	MyVector(MyVector&& other) : data_(std::move(other.data_))
+							   , current_(std::move(other.current_))
+							   , end_(std::move(other.end_))
+	{
+		other.data_ = nullptr;
+		other.current_ = 0;
+		other.end_ = 0;
+	}
+	
+	MyVector<T>& operator=(const MyVector& other){
+    if(this != &other){
+        this->release();
+        data_ = nullptr;
+        data_ = new T[other.end_];
+        current_ = other.current_;
+        end_ = other.end_ ;
+        std::copy(other.begin(), other.end(), begin());
+    }
+    return *this;
+}
+	
+	MyVector<T>& operator=(MyVector&& other){
+		if(this != &other){
+			this->release();
+			data_ = std::move(other.data_);
+			other.data_ = nullptr;
+			current_ = std::move(other.current_);
+			end_ = std::move(other.end_);
+			other.current_ = 0;
+			other.end_ = 0;
+		}
+		return *this;
+	}
+	
+	~MyVector(){
         release();
     }
-    
+	
     T& operator[](size_t index){
         return *(data_ + index);
     }
-
-    /*T* begin() {
-        return data_;
-    }
-	
-    T* end() {
-        return data_ + current_;
-    }
-	
-    const T* begin() const {
-        return data_;
-    }
-	
-    const T* end() const {
-        return data_ + current_;
-    }*/
 	
 	auto begin() {
         return Iterator(data_);
@@ -52,7 +71,6 @@ public:
         return Iterator(data_ + current_);
     }
 	
-
     size_t size() const{
         return current_;
     }
@@ -89,9 +107,9 @@ public:
 			return;
 		}
 		
-		// shift(copy) every element from last down to pos minus one to the next "cell" of container
+		// shift(copy) every element from last down to pos to the next "cell" of container
 		for(size_t i = current_; i >= pos; --i) {
-			// if pos = 0 then when i reaches 0 next number will be again more than pos
+			// size_t overflow protection;
 			if(i > current_){ 
 				break;
 			}
@@ -114,10 +132,40 @@ public:
 	}	
 
 private:
-    T* data_ = nullptr;
-    size_t current_ = 0; // current last used item
-    size_t end_ = 0; // capacity
-   
+	struct Iterator {
+		Iterator(T* ptr) : ptr_(ptr) {}
+
+		T& operator*() const { 
+			return *ptr_; 
+		}
+		T* operator->() { 
+			return ptr_; 
+		}
+
+		// Prefix increment
+		Iterator& operator++() { 
+			ptr_++; 
+			return *this; 
+		}  
+
+		// Postfix increment
+		Iterator operator++(int) { 
+			Iterator tmp = *this; 
+			++(*this); 
+			return tmp; 
+		}
+
+		friend bool operator== (const Iterator& a, const Iterator& b) { 
+			return a.ptr_ == b.ptr_; 
+		}
+		friend bool operator!= (const Iterator& a, const Iterator& b) { 
+			return a.ptr_ != b.ptr_; 
+		}
+
+	private:
+		T* ptr_;
+	};
+ 
     void realloc(){
         end_ *= 2;
         T* new_alloc = new T[end_];
@@ -130,4 +178,9 @@ private:
     void release(){
         delete[] data_;
     }
+	
+	T* data_ = nullptr;
+    size_t current_ = 0; // current last used item
+    size_t end_ = 0; // capacity
+	
 };

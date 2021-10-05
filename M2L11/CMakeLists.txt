@@ -26,9 +26,15 @@ add_executable(Test
 	MyVector.h
 )
 
-target_link_libraries(TestMyVector gtest_main)
+add_executable(TestMySLList
+    TestMySLList.cpp
+	MySLList.h
+)
 
+target_link_libraries(TestMyVector gtest_main)
+target_link_libraries(TestMySLList gtest_main)
 
 
 set_target_properties(TestMyVector PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(Test PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(TestMySLList PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
