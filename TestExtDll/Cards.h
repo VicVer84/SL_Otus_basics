@@ -1,13 +1,16 @@
 #pragma once
 
-#include "TestExtDll.h"
+#include "Logger.h"
+#include "Structs.h"
 
+#include <windows.h>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <set>
 #include <sstream>
 #include <string>
+
 
 
 struct KeyValueToken {
@@ -20,11 +23,11 @@ class Cards {
 public:
 	Cards(char delimiter);
 
-	bool FindCard(std::string& Card);
-	std::string GetCardData(std::string& Card, std::string&& FieldName);
+	bool FindCard(std::string& Card) const;
+	std::string GetCardData(std::string& Card, std::string&& FieldName) const;
 	int GetCard(std::string&& Card, CardInfo* info);
 	int FindByEmail(std::string&& Email, EmailInfo* einfo);
-	std::string GetCards();
+	std::string GetCards() const;
 
 private:
 	std::string CardFileName = "Cards.txt";
@@ -32,4 +35,3 @@ private:
 
 	INT64 StrToInt(std::string num);
 };
-bool operator<(const KeyValueToken& lhs, const KeyValueToken& rhs);

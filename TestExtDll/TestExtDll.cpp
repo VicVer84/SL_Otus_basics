@@ -1,5 +1,3 @@
-
-#include "pch.h" // use pch.h in Visual Studio 2019
 #include "TestExtDll.h"
 
 
@@ -102,16 +100,9 @@ int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf,
 	Logger logger("TransactionsEx");
 
 	logger.AddLog("Transaction size: " + std::to_string(sizeof(Transaction)));
-	std::stringstream ss;
-	ss << "InpBuf:\n";
-	char prev = '\r';
-	for (size_t i = 0; i < InpLen; ++i) {
-		if (!((prev == '\r' && InpBuf[i] == '\n') || (prev == '\n' && InpBuf[i] == '\r'))) {
-			ss << InpBuf[i];
-		}
-		prev = InpBuf[i];
-	}
-	logger.AddLog(ss.str());
+
+	logger.AddLogCrit(InpBufToStr(InpBuf, InpLen));
+
 	logger.AddLog("Count: " + std::to_string(Count));
 
 	for (size_t i = 0; i < Count; i++) {
@@ -172,4 +163,3 @@ void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
 	CBfind(Back, 150, 200, julius.c_str());
 	logger.AddLog("Found Julius");
 }
-

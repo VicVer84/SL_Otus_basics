@@ -1,5 +1,6 @@
 #pragma once
 #pragma pack(push, 1)
+
 #include <windows.h>
 
 struct CardInfo {
@@ -73,3 +74,4 @@ struct EmailInfo {
 	INT64 cardNum;
 	unsigned char OwnerName[40];
 };
+#pragma pack(pop)

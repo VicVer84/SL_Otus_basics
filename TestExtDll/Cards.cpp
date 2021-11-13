@@ -1,7 +1,7 @@
-#include "pch.h" // use pch.h in Visual Studio 2019
 #include "Cards.h"
-#include <clocale>
-#include "Logger.h"
+
+
+//#include <clocale>
 
 
 
@@ -46,11 +46,11 @@ Cards::Cards(char delimiter) {
 	}
 }
 
-std::string Cards::GetCards() {
+std::string Cards::GetCards() const{
 	std::stringstream ss;
-	for (auto item : cards) {
+	for (auto& item : cards) {
 		ss << item.first << "\n";
-		for (auto t : item.second) {
+		for (auto& t : item.second) {
 			ss << '\t' << t._key << " " << t._value << '\n';
 		}
 		ss << '\n';
@@ -58,7 +58,7 @@ std::string Cards::GetCards() {
 	return ss.str();
 }
 
-bool Cards::FindCard(std::string& Card) {
+bool Cards::FindCard(std::string& Card) const{
 	return cards.count(Card) > 0;
 }
 
@@ -112,8 +112,8 @@ int Cards::GetCard(std::string&& Card, CardInfo* info) {
 	return 1;
 }
 
-std::string Cards::GetCardData(std::string& Card, std::string&& FieldName) {
-	for (auto data : cards.at(Card)) {
+std::string Cards::GetCardData(std::string& Card, std::string&& FieldName) const {
+	for (auto& data : cards.at(Card)) {
 		if (data._key == FieldName) {
 			return data._value;
 		}
@@ -133,8 +133,8 @@ INT64 Cards::StrToInt(std::string num) {
 int Cards::FindByEmail(std::string&& Email, EmailInfo* einfo) {
 
 	std::string Card;
-	for (auto card : cards) {
-		for (auto token : card.second) {
+	for (auto& card : cards) {
+		for (auto& token : card.second) {
 			if (token._key == "email" && token._value == Email) {
 				Card = card.first;
 			}

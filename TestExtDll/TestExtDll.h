@@ -3,7 +3,6 @@
 #include "Structs.h"
 #include "Logger.h"
 #include "Cards.h"
-#include "Structs.h"
 #include "Utils.h"
 
 #include <random>
@@ -11,6 +10,7 @@
 #include <utility>
 #include <limits>
 #include <iostream>
+#include <windows.h>
 
 
 typedef void (__stdcall *CBFind)(void*, DWORD, INT64, const char*);

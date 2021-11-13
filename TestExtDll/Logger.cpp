@@ -1,4 +1,3 @@
-#include "pch.h" // use pch.h in Visual Studio 2019
 #include "Logger.h"
 
 Logger::Logger(std::string MethodName) : start(steady_clock::now()), methodName(MethodName) {
