@@ -1,6 +1,6 @@
 # SL_Otus_basics
 
-DLL, эмулирующая работу сервера персональных карт для касс.
+Библиотека эмулирующая работу сервера персональных карт для касс r_keeper.
 
 Состав:
 TestExtDll - реализация интерфейса.
@@ -9,18 +9,24 @@ Logger - класс для логирования и по совместител
 Utils.h - класс с полезными функциями.
 Cards - класс эмулирующий работу с базой карт.
 
+
+Библиотеку необходимо собирать под x86
+сmake .. -A Win32
+
+
+Описание интерфейса бибилиотеки даётся вендором на языке Pascal.
+Всё что описано ниже транслировано мной в с++ (возможно с ошибками).
+Оригинальное описание можно найти в файле .\TestExtDll\ExtDll.txt
+
 Для FarCards 6.XX
 
-DLL должна предоставить функции GetCardInfoEx и TransactionsEx.
+Билиотека должна предоставить функции GetCardInfoEx и TransactionsEx.
 Все остальные функции являются необязательными.
 
 -----------------------------------------------------------------------
-function GetCardInfoEx(
-  Card: Int64; Restaurant, UnitNo: DWORD;
-  Info: Pointer;
-  InpBuf: Pointer; InpLen: DWORD; InpKind: Word;
-  var OutBuf: Pointer; var OutLen: DWORD; var OutKind: Word
-  ): Integer; stdcall;
+int GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
+					CardInfo* info, const char* InpBuf, DWORD InpLen, WORD InpKind,
+					const char* OutBuf, DWORD &OutLen, WORD &OutKind);
 
 Эта функция возвращает информацию о карте
 
@@ -94,11 +100,8 @@ Int64       сумма на карточном счете N 8, в копейка
 
 -----------------------------------------------------------------------
 
-function TransactionsEx(
-  Count: DWORD; List: Pointer;
-  InpBuf: Pointer; InpLen: DWORD; InpKind: Word;
-  var OutBuf: Pointer; var OutLen: DWORD; var OutKind: Word
-  ): Integer; stdcall;
+int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf, DWORD InpLen,
+					WORD InpKind, void* OutBuf, DWORD &OutLen, WORD &OutKind);
 
 Эта функция проводит транзакции для кассового чека
 
@@ -169,15 +172,15 @@ Word        размер налога H в процентах * 100
 
 -----------------------------------------------------------------------
 
-procedure Init; stdcall; - вызовется после загрузки DLL
+void Init() - вызовется после загрузки DLL
 
 -----------------------------------------------------------------------
 
-procedure Done; stdcall; - вызовется перед выгрузкой DLL
+void Done() - вызовется перед выгрузкой DLL
 
 -----------------------------------------------------------------------
 
-function GetCardImageEx( Card: Int64; Info: Pointer ): Integer; stdcall;
+int GetCardImageEx(INT64 Card, CardImageInfo* info);
 
 Возвращает файл с картинкой для карты, например фотографию владельца
 или его подпись.
@@ -202,7 +205,7 @@ Word        размер структуры = 258 байт
 
 -----------------------------------------------------------------------
 
-function GetDiscLevelInfoL( Account: DWORD; Info: Pointer ): Integer; stdcall;
+int GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo* info);
 
 возвращает информацию о текущем дисконтном уровне карты
 
@@ -226,7 +229,7 @@ Int64       сумма, необходимая для перехода на сл
 
 -----------------------------------------------------------------------
 
-procedure FindCardsL( FindText: PAnsiChar; CBFind: Pointer; Back: Pointer ); stdcall;
+void FindCardsL(const char* FindText, CBFind CBfind, void* Back);
 
 Поиск счетов по подстроке. 
 
@@ -235,11 +238,11 @@ procedure FindCardsL( FindText: PAnsiChar; CBFind: Pointer; Back: Pointer ); std
 Card и Holder - информация из найденного счета.
 Тип функции CBFind:
 
-procedure CBFind( Back: Pointer; Account: DWORD; Card: Int64; Holder: PAnsiChar ); stdcall;
+void (*CBFind)(void*, DWORD, INT64, const char*);
 
 -----------------------------------------------------------------------
 
-procedure AnyInfo( InpBuf: Pointer; InpLen: DWORD; var OutBuf: Pointer; var OutLen: DWORD ); stdcall;
+void AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen);
 
 Обмен произвольной информацией
 
@@ -250,7 +253,7 @@ OutLen - длина ответной информации
 
 ----------------------------------------------------------------------
 
-function FindEmail( Email: PAnsiChar; Info: Pointer ): Integer; stdcall;
+int FindEmail(const char* Email, EmailInfo* emailInfo)
 
 Поиск счета по e-mail.
 
@@ -273,7 +276,7 @@ Int64       Номер карты
 
 -----------------------------------------------------------------------
 
-procedure FindAccountsByKind( Kind: Integer; FindText: PAnsiChar; CBFind: Pointer; Back: Pointer ); stdcall;
+void FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back);
 
 Поиск счетов по разным признакам.
 
@@ -286,7 +289,7 @@ Kind - тип искомой информации
 Card и Holder - информация из найденного счета.
 Тип функции CBFind:
 
-procedure CBFind( Back: Pointer; Account: DWORD; Card: Int64; Holder: PAnsiChar ); stdcall;
+void (*CBFind)(void*, DWORD, INT64, const char*);
 
 =====================================================================
 

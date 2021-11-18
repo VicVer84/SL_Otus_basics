@@ -3,15 +3,17 @@
 #include "Logger.h"
 #include "Structs.h"
 
-#include <windows.h>
+#include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <set>
 #include <sstream>
 #include <string>
+#include <windows.h>
 
-
+typedef void (__stdcall *CBFind)(void*, DWORD, INT64, const char*);
 
 struct KeyValueToken {
 	std::string _key;
@@ -23,10 +25,11 @@ class Cards {
 public:
 	Cards(char delimiter);
 
-	bool FindCard(std::string& Card) const;
-	std::string GetCardData(std::string& Card, std::string&& FieldName) const;
-	int GetCard(std::string&& Card, CardInfo* info);
-	int FindByEmail(std::string&& Email, EmailInfo* einfo);
+	bool FindCard(std::string&) const;
+	std::string GetCardData(std::string&, std::string&&) const;
+	int GetCard(std::string&&, CardInfo*);
+	int FindByEmail(std::string&&, EmailInfo*);
+	void FindOwnerByNamePart(std::string&&, CBFind, void*);
 	std::string GetCards() const;
 
 private:

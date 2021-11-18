@@ -1,21 +1,14 @@
 #include "Cards.h"
 
-
-//#include <clocale>
-
-
-
 KeyValueToken::KeyValueToken(std::string& line, char delimiter) {
-	std::wstring wsTmp(line.begin(), line.end());
-	std::wstringstream ss;
-	ss << wsTmp;
+	std::stringstream ss;
+	ss << line;
 	bool delimFound = false;
-	wchar_t c;
+	char c;
 	while (ss.get(c)) {
 		if (c == delimiter) {
 			delimFound = true;
 		}
-		//std::setlocale(LC_ALL, "ru_RU.utf8");
 		if (iswalnum(c) || c == '@' || c == '.') {
 			if (!delimFound) {
 				_key += c;
@@ -149,3 +142,25 @@ int Cards::FindByEmail(std::string&& Email, EmailInfo* einfo) {
 		return 1;
 	}	
 }
+
+std::string str_tolower(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(), 
+		[](unsigned char c){ return std::tolower(c); }
+	);
+    return s;
+}
+
+void Cards::FindOwnerByNamePart(std::string&& Name, CBFind CBfind, void* Back) {
+	Logger logger("FindOwnerByNamePart");
+	int i = 0;
+	for (auto& card : cards) {
+		for (auto& token : card.second) {
+			if (token._key == "cardOwner" && str_tolower(token._value).find(str_tolower(Name)) != std::string::npos) {
+				CBfind(Back, i, StrToInt(card.first), token._value.c_str());
+				++i;
+				logger.AddLog("Found: Card: " + card.first + " OwnerName: " + token._value + '\n');
+			}
+		}
+	}
+}
+

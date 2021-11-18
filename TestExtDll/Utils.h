@@ -2,10 +2,10 @@
 
 #include "Structs.h"
 
-#include <string>
-#include <iomanip>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
+#include <string>
 
 std::string GetCardInfo(const CardInfo* Info);
 std::string GetTransaction(const Transaction* tr);

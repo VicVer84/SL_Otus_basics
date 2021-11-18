@@ -155,11 +155,21 @@ int FindEmail(const char* Email, EmailInfo* emailInfo) {
 void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
 	Logger logger("FindCardsL");	
 
-	std::string maximus = "Maximus";
-	CBfind(Back, 100, 123, maximus.c_str());
-	logger.AddLog("Found Maximus");
+	/*std::string maximus = "TestOwner";
+	CBfind(Back, 1, 1, maximus.c_str());
+	logger.AddLog("Found TestOwner");
 
 	std::string julius = "Julius";
-	CBfind(Back, 150, 200, julius.c_str());
-	logger.AddLog("Found Julius");
+	CBfind(Back, 2, 200, julius.c_str());
+	logger.AddLog("Found Julius");*/
+	Cards cards('=');
+	cards.FindOwnerByNamePart(FindText, CBfind, Back);
 }
+
+int GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo* info) {
+	return 1;
+}
+
+void AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen) {}
+
+void FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back) {}

@@ -1,8 +1,8 @@
 #pragma once
-#pragma pack(push, 1)
 
 #include <windows.h>
 
+#pragma pack(push, 1)
 struct CardInfo {
 	WORD size;
 	BYTE isDeleted;
@@ -73,5 +73,12 @@ struct EmailInfo {
 	DWORD accountNum;
 	INT64 cardNum;
 	unsigned char OwnerName[40];
+};
+
+struct DiscLevelInfo {
+	WORD size;
+	unsigned char CurrentDiscLvlName[40];
+	unsigned char NextDiscLvlName[40];
+	INT64 SumToNextLvl;
 };
 #pragma pack(pop)

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(COURSEPROJECT)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+
 add_library(TestExtDll SHARED
     ${CMAKE_SOURCE_DIR}/TestExtDll/TestExtDll.cpp
 	${CMAKE_SOURCE_DIR}/TestExtDll/Cards.cpp
@@ -14,14 +16,7 @@ add_library(TestExtDll SHARED
 	${CMAKE_SOURCE_DIR}/TestExtDll/Structs.h
 )
 
-if(MSVC)
-    add_compile_options(
-        $<$<CONFIG:>:/MT> #---------|
-        $<$<CONFIG:Release>:/MT> #--|
-    )
-endif()
 
-set_target_properties(TestExtDll PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "/MACHINE:X86 /DLL")
 set_target_properties(TestExtDll PROPERTIES COMPILE_FLAGS "/MT" LINK_FLAGS "/DLL" )
-#set (CMAKE_CXX_FLAGS "-m32")
+
 set_target_properties(TestExtDll PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)

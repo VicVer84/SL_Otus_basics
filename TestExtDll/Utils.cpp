@@ -59,7 +59,7 @@ std::string GetTransaction(const Transaction* tr) {
 	ss << std::setw(30) << "RKCheckA: " << tr->RKCheckA << '\n';
 	ss << std::setw(30) << "RKDate: " << tr->RKDate << '\n';
 	ss << std::setw(30) << "RKUnit: " << tr->RKUnit << '\n';
-	ss << std::setw(30) << "Summa:	" << tr->Summa << '\n';
+	ss << std::setw(30) << "Summa: " << tr->Summa << '\n';
 	ss << std::setw(30) << "UID: " << tr->UID << '\n';
 	ss << std::setw(30) << "VatPrcA: " << tr->VatPrcA << '\n';
 	ss << std::setw(30) << "VatPrcA: " << tr->VatSumA << '\n';
@@ -108,7 +108,35 @@ void CreateCardsTxt() {
 	ofs << "comment =\n";
 	ofs << "screenComment =\n";
 	ofs << "printComment =\n";
-	ofs << "email = ucs@ucs.ru\n";
+	ofs << "email = test@test.ru\n";
+	
+	ofs << "[CardNo=2]\n";
+	ofs << "isDeleted = 0\n";
+	ofs << "isNeedWithdraw = 0\n";
+	ofs << "isExpired = 0\n";
+	ofs << "isInvalid = 0\n";
+	ofs << "isManagerConfirm = 0\n";
+	ofs << "isBlocked = 0\n";
+	ofs << "blockReason = 0\n";
+	ofs << "cardOwner = ownerNew\n";
+	ofs << "ownerId = 2\n";
+	ofs << "accountNum = 2\n";
+	ofs << "unpayType = 0\n";
+	ofs << "bonusNum = 0\n";
+	ofs << "discountNum = 0\n";
+	ofs << "maxDiscountAmount = 100000000\n";
+	ofs << "amountOnSubAccount1 = 1000\n";
+	ofs << "amountOnSubAccount2 = 2000\n";
+	ofs << "amountOnSubAccount3 = 3000\n";
+	ofs << "amountOnSubAccount4 = 4000\n";
+	ofs << "amountOnSubAccount5 = 5000\n";
+	ofs << "amountOnSubAccount6 = 6000\n";
+	ofs << "amountOnSubAccount7 = 7000\n";
+	ofs << "amountOnSubAccount8 = 8000\n";
+	ofs << "comment =\n";
+	ofs << "screenComment =\n";
+	ofs << "printComment =\n";
+	ofs << "email = test1@test.ru\n";
 	ofs.close();
 }
 
@@ -118,7 +146,7 @@ std::string GetEmailInfo(const EmailInfo* einfo) {
 	ss << '\n';
 	ss << std::setw(30) << "Account: " << einfo->accountNum << '\n';
 	ss << std::setw(30) << "Card: " << einfo->cardNum << '\n';
-	ss << std::setw(30) << "Kind: " << einfo->OwnerName << '\n';
+	ss << std::setw(30) << "Owner: " << einfo->OwnerName << '\n';
 	return ss.str();
 }
 

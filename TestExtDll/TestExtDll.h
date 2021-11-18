@@ -33,3 +33,8 @@ extern "C" void __declspec(dllexport) __cdecl Init();
 
 extern "C" void __declspec(dllexport) __cdecl Done();
 
+extern "C" int __declspec(dllexport) __cdecl GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo * info);
+
+extern "C" void __declspec(dllexport) __cdecl AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen);
+
+extern "C" void __declspec(dllexport) __cdecl FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back);
