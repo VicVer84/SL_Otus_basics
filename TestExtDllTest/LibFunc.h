@@ -26,19 +26,22 @@ dumpbin /exports
 struct FindInfo {
 	INT64 Card = 0;
 	std::string Name = "";
+	bool operator==(FindInfo rhs) {
+		return Card == rhs.Card && Name == rhs.Name;
+	}
 };
 
 namespace TestExtDll {
 	void AnyInfo();
 	void __stdcall CBFind(std::vector<FindInfo>*, DWORD, INT64, const char*);
-	void Done(std::ostream& os);
+	void Done(std::ostream&);
 	void FindAccountsByKind();
-	std::vector<FindInfo> FindCardsL(std::ostream& os);
-	int FindEmail(std::ostream&);
-	int GetCardImageEx(std::ostream& os);
-	int GetCardInfoEx(std::ostream& os);
+	std::vector<FindInfo> FindCardsL(std::string);
+	int FindEmail(std::string, EmailInfo*);
+	int GetCardImageEx(CardImageInfo*, INT64);
+	int GetCardInfoEx(CardInfo*, INT64);
 	int GetDiscLevelInfoL();
-	void Init(std::ostream& os);
-	int TransactionsEx(std::ostream& os);
+	void Init(std::ostream&);
+	int TransactionsEx(DWORD Count, Transaction* transactions[]);
 }
 

@@ -14,7 +14,7 @@ void Init() {
 	if (!ifs) {
 		logger.AddLog("Cards.txt not found\n");
 		logger.AddLog("Creating Cards.txt\n");
-		CreateCardsTxt();
+		Cards::CreateCardsTxt();
 	}
 }
 
@@ -88,7 +88,6 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 	int result = card.GetCard(std::to_string(Card), info);
 	
 	logger.AddLog("result: " + std::to_string(result));
-
 	logger.AddLog(GetCardInfo(info));
 	return result;
 }
@@ -110,6 +109,8 @@ int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf,
 		logger.AddLog("Transaction num:" + std::to_string(i));
 		logger.AddLog(GetTransaction(tr));	
 	}
+	Cards card('=');
+	card.UpdateCards(Count, Transactions);
 	return 0;
 }
 
@@ -153,15 +154,7 @@ int FindEmail(const char* Email, EmailInfo* emailInfo) {
 
 
 void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
-	Logger logger("FindCardsL");	
-
-	/*std::string maximus = "TestOwner";
-	CBfind(Back, 1, 1, maximus.c_str());
-	logger.AddLog("Found TestOwner");
-
-	std::string julius = "Julius";
-	CBfind(Back, 2, 200, julius.c_str());
-	logger.AddLog("Found Julius");*/
+	Logger logger("FindCardsL");
 	Cards cards('=');
 	cards.FindOwnerByNamePart(FindText, CBfind, Back);
 }

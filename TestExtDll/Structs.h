@@ -11,8 +11,8 @@ struct CardInfo {
 	BYTE isInvalid;
 	BYTE isManagerConfirm;
 	BYTE isBlocked;
-	unsigned char blockReason[256];
-	unsigned char cardOwner[40];
+	unsigned char blockReason[256] = {0};
+	unsigned char cardOwner[40] = {0};
 	INT64 ownerId;
 	DWORD accountNum;
 	DWORD unpayType;
@@ -27,10 +27,38 @@ struct CardInfo {
 	INT64 amountOnSubAccount6;
 	INT64 amountOnSubAccount7;
 	INT64 amountOnSubAccount8;
-	unsigned char comment[256];
-	unsigned char screenComment[256];
-	unsigned char printComment[256];
-
+	unsigned char comment[256] = {0};
+	unsigned char screenComment[256]= {0};
+	unsigned char printComment[256] = {0};
+	
+	bool operator==(const CardInfo rhs) const {
+		return (size == rhs.size
+			&& isDeleted == rhs.isDeleted
+			&& isNeedWithdraw == rhs.isNeedWithdraw
+			&& isExpired == rhs.isExpired
+			&& isInvalid == rhs.isInvalid
+			&& isManagerConfirm == rhs.isManagerConfirm
+			&& isBlocked == rhs.isBlocked
+			&& (memcmp(blockReason, rhs.blockReason, sizeof(blockReason)) == 0)
+			&& (memcmp(cardOwner, rhs.cardOwner, sizeof(cardOwner)) == 0)
+			&& ownerId == rhs.ownerId
+			&& accountNum == rhs.accountNum
+			&& unpayType == rhs.unpayType
+			&& bonusNum == rhs.bonusNum
+			&& discountNum == rhs.discountNum
+			&& maxDiscountAmount == rhs.maxDiscountAmount
+			&& amountOnSubAccount1 == rhs.amountOnSubAccount1
+			&& amountOnSubAccount2 == rhs.amountOnSubAccount2
+			&& amountOnSubAccount3 == rhs.amountOnSubAccount3
+			&& amountOnSubAccount4 == rhs.amountOnSubAccount4
+			&& amountOnSubAccount5 == rhs.amountOnSubAccount5
+			&& amountOnSubAccount6 == rhs.amountOnSubAccount6
+			&& amountOnSubAccount7 == rhs.amountOnSubAccount7
+			&& amountOnSubAccount8 == rhs.amountOnSubAccount8
+			&& (memcmp(comment, rhs.comment, sizeof(comment)) == 0)
+			&& (memcmp(screenComment, rhs.screenComment, sizeof(screenComment)) == 0)
+			&& (memcmp(printComment, rhs.printComment, sizeof(printComment)) == 0));
+	}
 };
 
 struct Transaction {

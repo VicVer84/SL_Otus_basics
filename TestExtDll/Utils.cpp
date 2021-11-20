@@ -80,66 +80,6 @@ std::string GetTransaction(const Transaction* tr) {
 	return ss.str();
 }
 
-void CreateCardsTxt() {
-	std::ofstream ofs("cards.txt", std::ios::app);
-	ofs << "[CardNo=1]\n";
-	ofs << "isDeleted = 0\n";
-	ofs << "isNeedWithdraw = 0\n";
-	ofs << "isExpired = 0\n";
-	ofs << "isInvalid = 0\n";
-	ofs << "isManagerConfirm = 0\n";
-	ofs << "isBlocked = 0\n";
-	ofs << "blockReason = 0\n";
-	ofs << "cardOwner = TestOwner\n";
-	ofs << "ownerId = 1\n";
-	ofs << "accountNum = 1\n";
-	ofs << "unpayType = 0\n";
-	ofs << "bonusNum = 0\n";
-	ofs << "discountNum = 0\n";
-	ofs << "maxDiscountAmount = 100000000\n";
-	ofs << "amountOnSubAccount1 = 1000\n";
-	ofs << "amountOnSubAccount2 = 2000\n";
-	ofs << "amountOnSubAccount3 = 3000\n";
-	ofs << "amountOnSubAccount4 = 4000\n";
-	ofs << "amountOnSubAccount5 = 5000\n";
-	ofs << "amountOnSubAccount6 = 6000\n";
-	ofs << "amountOnSubAccount7 = 7000\n";
-	ofs << "amountOnSubAccount8 = 8000\n";
-	ofs << "comment =\n";
-	ofs << "screenComment =\n";
-	ofs << "printComment =\n";
-	ofs << "email = test@test.ru\n";
-	
-	ofs << "[CardNo=2]\n";
-	ofs << "isDeleted = 0\n";
-	ofs << "isNeedWithdraw = 0\n";
-	ofs << "isExpired = 0\n";
-	ofs << "isInvalid = 0\n";
-	ofs << "isManagerConfirm = 0\n";
-	ofs << "isBlocked = 0\n";
-	ofs << "blockReason = 0\n";
-	ofs << "cardOwner = ownerNew\n";
-	ofs << "ownerId = 2\n";
-	ofs << "accountNum = 2\n";
-	ofs << "unpayType = 0\n";
-	ofs << "bonusNum = 0\n";
-	ofs << "discountNum = 0\n";
-	ofs << "maxDiscountAmount = 100000000\n";
-	ofs << "amountOnSubAccount1 = 1000\n";
-	ofs << "amountOnSubAccount2 = 2000\n";
-	ofs << "amountOnSubAccount3 = 3000\n";
-	ofs << "amountOnSubAccount4 = 4000\n";
-	ofs << "amountOnSubAccount5 = 5000\n";
-	ofs << "amountOnSubAccount6 = 6000\n";
-	ofs << "amountOnSubAccount7 = 7000\n";
-	ofs << "amountOnSubAccount8 = 8000\n";
-	ofs << "comment =\n";
-	ofs << "screenComment =\n";
-	ofs << "printComment =\n";
-	ofs << "email = test1@test.ru\n";
-	ofs.close();
-}
-
 std::string GetEmailInfo(const EmailInfo* einfo) {
 	std::stringstream ss;
 	ss << std::left;
@@ -162,4 +102,27 @@ std::string InpBufToStr(const char* InpBuf, DWORD& InpLen) {
 		prev = InpBuf[i];
 	}
 	return ss.str();
+}
+
+std::string PrintTimeNow() {
+	time_t rawtime;
+	struct tm* timeinfo = new tm;
+	char buffer[80];
+
+	time(&rawtime);
+	localtime_s(timeinfo, &rawtime);
+
+	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+	delete timeinfo;
+
+	return buffer;
+}
+INT64 StrToInt(std::string num) {
+	INT64 number;
+	std::istringstream iss(num);
+	iss >> number;
+	if (iss.fail()) {
+		return 0;
+	}
+	return number;
 }

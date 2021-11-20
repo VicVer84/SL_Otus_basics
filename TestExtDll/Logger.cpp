@@ -1,25 +1,13 @@
 #include "Logger.h"
 
 Logger::Logger(std::string MethodName) : start(steady_clock::now()), methodName(MethodName) {
-	ofs.open(LOGFILENAME, std::ios::app);
+	ofs.open(LogFileName, std::ios::app);
 	if (ofs) {
 		AddLogCrit(methodName);
 	}
 }
 
-std::string Logger::PrintTimeNow() {
-	time_t rawtime;
-	struct tm* timeinfo = new tm;
-	char buffer[80];
 
-	time(&rawtime);
-	localtime_s(timeinfo, &rawtime);
-
-	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
-	delete timeinfo;
-
-	return buffer;
-}
 
 void Logger::AddLog(std::string Message) {
 	if (!ofs) {
