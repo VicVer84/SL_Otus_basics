@@ -1,12 +1,6 @@
 #include "TestExtDll.h"
 
 
-
-
-
-
-//char* CSTR = new char[100000];
-
 void Init() {
 	Logger logger("Init");
 	logger.AddLogCrit("Call Init");
@@ -32,50 +26,9 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 {
 	Logger logger("GetCardInfoEx");
 	logger.AddLog("CardInfo size: " + std::to_string(sizeof(CardInfo)));
-	/*
-	xml = "<ident_info>\n";
-	xml += "\t<item_content hint = \"Ваш купон позволяет выбрать 2 товара из первой группы и любой товар из второй.\">\n";
-	xml += "\t\t<group name = \"group name\" printname = \"Имя группы\" order = \"1\" maxquant = \"2\">\n";
-	xml += "\t\t\t<item code = \"123\" kind = \"summ\" val = \"10.00\" order = \"3\" max = \"3\" default = \"1\" disccode = \"22\" />\n";
-	xml += "\t\t\t<item code = \"321\" kind = \"percent\" val = \"10.00\"order = \"2\" max = \"2\" disccode = \"123\" />\n";
-	xml += "\t\t\t<item code = \"213\" kind = \"price\" val = \"10\" order = \"10\" max = \"1\" />\n";
-	xml += "\t\t</group>\n";
-	xml += "\t\t<group name = \"group name2\" printname = \"Бренди\" order = \"2\">\n";
-	xml += "\t\t\t<item code = \"117\" kind = \"percent\" val = \"1000\" order = \"3\" disccode = \"22\" />\n";
-	xml += "\t\t\t<item code = \"118\" kind = \"percent\" val = \"1230\" order = \"3\" disccode = \"22\" />\n";
-	xml += "\t\t</group>\n";
-	xml += "\t</item_content>\n";
-	xml += "</ident_info>";
-	
-
-	*/
-	
-	//CopyMemory(OutBuf, xml.c_str(), sizeof(xml.c_str()));
-	//OutLen = xml.size();
-	//OutKind = 3;
-	//OutBuf = reinterpret_cast<const unsigned char*> (xml.c_str());
-	//OutBuf = xml.c_str();
-	
-	/*xml.copy(CSTR, xml.size() + 1);
-	CSTR[xml.size()] = '\0';
-	OutBuf = CSTR;
-	OutLen = xml.size();
-	OutKind = 3;
-	logger.AddLog("\nCardInfo size: " + std::to_string(sizeof(CardInfo)));
-	logger.AddLog("\nOutBuf: " + std::to_string(xml.size()));*/
-
-/*	for (int i = 0; i < xml.size(); ++i) {
-		outfile << outBuf[i]; 
-	}
-	outfile << '\n' << delim << '\n';*/
-	
-	/*outfile << "OutBuf:\n";
-	for (int i = 0; i < OutLen; ++i) {
-		outfile << OutBuf[i];		
-	}*/
 
 	Cards card('=');
-	logger.AddLog("\nCards:\n" + card.GetCards());
+	logger.AddLog("\nCards:\n" + card.CardsToString());
 
 	logger.AddLog("Card: " + std::to_string(Card));
 	logger.AddLog("Restaurant: " + std::to_string(Restaurant));

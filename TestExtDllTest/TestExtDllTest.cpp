@@ -34,7 +34,7 @@ TEST(TestExtDllTest, GetCardInfoEx) {
 	expected.isExpired = 0;
 	expected.isInvalid = 0;
 	expected.isManagerConfirm = 0;
-	expected.isBlocked = 0;
+	expected.isBlocked = 0;	
 	CopyMemory((&expected)->blockReason, "0", sizeof("0"));
 	CopyMemory((&expected)->cardOwner, "TestOwner", sizeof("TestOwner"));
 	expected.ownerId = 1;

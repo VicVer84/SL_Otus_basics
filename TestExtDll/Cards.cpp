@@ -42,7 +42,7 @@ Cards::Cards(char delimiter) {
 	}
 }
 
-std::string Cards::GetCards() const{
+std::string Cards::CardsToString() const{
 	std::stringstream ss;
 	for (auto& item : cards) {
 		ss << item.first << "\n";
@@ -54,12 +54,8 @@ std::string Cards::GetCards() const{
 	return ss.str();
 }
 
-bool Cards::FindCard(std::string& Card) const{
-	return cards.count(Card) > 0;
-}
-
 int Cards::GetCard(std::string&& Card, CardInfo* info) {
-	if (FindCard(Card)) {
+	if (cards.count(Card) > 0) {
 		Logger logger("GetCard found");
 		if (GetCardData(Card, "isDeleted") == "1" || GetCardData(Card, "isDeleted") == "true") {
 			info->isDeleted = true;
@@ -79,8 +75,8 @@ int Cards::GetCard(std::string&& Card, CardInfo* info) {
 		if (GetCardData(Card, "isBlocked") == "1" || GetCardData(Card, "isBlocked") == "true") {
 			info->isBlocked = true;
 		}
-		UpdateCharArray(info->blockReason, sizeof(info->blockReason), Card, "blockReason");
-		UpdateCharArray(info->cardOwner, sizeof(info->cardOwner), Card, "cardOwner");
+		CopyStrToCharArray(info->blockReason, sizeof(info->blockReason), Card, "blockReason");
+		CopyStrToCharArray(info->cardOwner, sizeof(info->cardOwner), Card, "cardOwner");
 		info->ownerId = StrToInt(GetCardData(Card, "ownerId"));
 		info->accountNum = StrToInt(GetCardData(Card, "accountNum"));
 		info->unpayType = StrToInt(GetCardData(Card, "unpayType"));
@@ -95,9 +91,9 @@ int Cards::GetCard(std::string&& Card, CardInfo* info) {
 		info->amountOnSubAccount6 = StrToInt(GetCardData(Card, "amountOnSubAccount6"));
 		info->amountOnSubAccount7 = StrToInt(GetCardData(Card, "amountOnSubAccount7"));
 		info->amountOnSubAccount8 = StrToInt(GetCardData(Card, "amountOnSubAccount8"));
-		UpdateCharArray(info->comment, sizeof(info->comment), Card, "comment");
-		UpdateCharArray(info->screenComment, sizeof(info->screenComment), Card, "screenComment");
-		UpdateCharArray(info->printComment, sizeof(info->printComment), Card, "printComment");
+		CopyStrToCharArray(info->comment, sizeof(info->comment), Card, "comment");
+		CopyStrToCharArray(info->screenComment, sizeof(info->screenComment), Card, "screenComment");
+		CopyStrToCharArray(info->printComment, sizeof(info->printComment), Card, "printComment");
 
 		return 0;
 	}
@@ -108,7 +104,7 @@ int Cards::GetCard(std::string&& Card, CardInfo* info) {
 	return 1;
 }
 
-void Cards::UpdateCharArray(unsigned char* c, int length, std::string& Card, std::string&& FieldName) {
+void Cards::CopyStrToCharArray(unsigned char* c, int length, std::string& Card, std::string&& FieldName) {
 	memcpy(c, cards.at(Card).at(FieldName).c_str(), cards.at(Card).at(FieldName).size() + 1);
 }
 
@@ -244,22 +240,22 @@ void Cards::UpdateCards(DWORD Count, Transaction* Transactions[]) {
 		}
 		if (tr->Kind == 0) {
 			std::stringstream ss;
-			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount1"]);
+			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount1"]); //sale accoumt
 			ss << sum + tr->Summa;
 			cards[Card]["amountOnSubAccount1"] = ss.str();
 		} else if (tr->Kind == 1) {
 			std::stringstream ss;
-			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount2"]);
+			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount2"]); //discount accoumt
 			ss << sum + tr->Summa;
 			cards[Card]["amountOnSubAccount2"] = ss.str();
 		} else if (tr->Kind == 2) {
 			std::stringstream ss;
-			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount3"]);
+			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount3"]); // bonus account
 			ss << sum + tr->Summa;
 			cards[Card]["amountOnSubAccount3"] = ss.str();
 		} else if (tr->Kind == 3) {
 			std::stringstream ss;
-			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount4"]);
+			INT64 sum = StrToInt(cards[Card]["amountOnSubAccount4"]); // expends account
 			ss << sum + tr->Summa;
 			cards[Card]["amountOnSubAccount4"] = ss.str();
 		}

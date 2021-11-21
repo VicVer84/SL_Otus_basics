@@ -13,7 +13,7 @@
 #include <windows.h>
 
 
-typedef void (__stdcall *CBFind)(void*, DWORD, INT64, const char*);
+typedef void (__cdecl *CBFind)(void*, DWORD, INT64, const char*);
 
 extern "C" int __declspec(dllexport) __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 	CardInfo* info, const char* InpBuf, DWORD InpLen, WORD InpKind,
