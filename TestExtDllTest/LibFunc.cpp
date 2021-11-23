@@ -132,11 +132,6 @@ namespace TestExtDll {
 
 		findCardsL(Findstr.c_str(), &CBFind, &vec);
 
-		/*for (size_t i = 0; i < vec.size(); ++i) {
-			os << "FindInfoL -> Card: " << vec[i].Card << " Name: " << vec[i].Name << std::endl;
-		}
-		os << std::endl;*/
-
 		::FreeLibrary(hDLL);
 		return vec;
 	}
