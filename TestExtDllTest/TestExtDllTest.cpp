@@ -267,14 +267,13 @@ TEST(TestExtDllTest, TransactionsEx) {
 int main (int argc, char** argv) {
 	std::ifstream ifs("TestExtDllTest.ini");
 	std::string str;
-	std::cout << ifs.is_open();
-	if (ifs.is_open()) {
+	if (ifs) {
 		std::getline(ifs, str);
 		if (str.size() <= 40) {
 			DLLNAME = str;
 		}
 	}
-	std::cout << "Loaded " << DLLNAME << ", to change dll name write it in TestExtDllTest.ini";
+	std::cout << "Loaded " << DLLNAME << ", to change dll name write it in TestExtDllTest.ini \n";
 	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
