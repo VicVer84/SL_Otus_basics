@@ -13,15 +13,18 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-include_directories(${CMAKE_SOURCE_DIR}/TestExtDll)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(TestExtDllTest 
     ${CMAKE_SOURCE_DIR}/TestExtDllTest/TestExtDllTest.cpp
-	${CMAKE_SOURCE_DIR}/TestExtDllTest/LibFunc.cpp
-	${CMAKE_SOURCE_DIR}/TestExtDllTest/LibFunc.h
-	${CMAKE_SOURCE_DIR}/TestExtDll/Structs.h
-	${CMAKE_SOURCE_DIR}/TestExtDll/Utils.cpp
-	${CMAKE_SOURCE_DIR}/TestExtDll/Utils.h
+	${CMAKE_SOURCE_DIR}/src/LibFunc.cpp
+	${CMAKE_SOURCE_DIR}/src/Logger.cpp
+	${CMAKE_SOURCE_DIR}/src/Utils.cpp
+	${CMAKE_SOURCE_DIR}/TestExtDllTest/TestExtDllTest.h
+	${CMAKE_SOURCE_DIR}/src/LibFunc.h
+	${CMAKE_SOURCE_DIR}/src/Logger.h
+	${CMAKE_SOURCE_DIR}/src/Structs.h	
+	${CMAKE_SOURCE_DIR}/src/Utils.h	
 )
 
 

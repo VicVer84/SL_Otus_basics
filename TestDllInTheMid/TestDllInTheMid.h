@@ -1,15 +1,12 @@
-
 #pragma once
-#include "Structs.h"
+
+#include "LibFunc.h"
 #include "Logger.h"
-#include "Cards.h"
+#include "Structs.h"
 #include "Utils.h"
 
+
 #include <random>
-#include <exception>
-#include <utility>
-#include <limits>
-#include <iostream>
 #include <windows.h>
 
 

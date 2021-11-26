@@ -4,3 +4,4 @@ project(COURSEPROJECT)
 
 add_subdirectory (TestExtDll)
 add_subdirectory (TestExtDllTest)
+add_subdirectory (TestDllInTheMid)

@@ -101,7 +101,7 @@ Int64       сумма на карточном счете N 8, в копейка
 -----------------------------------------------------------------------
 
 int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf, DWORD InpLen,
-					WORD InpKind, void* OutBuf, DWORD &OutLen, WORD &OutKind);
+					WORD InpKind, const char* OutBuf, DWORD &OutLen, WORD &OutKind);
 
 Эта функция проводит транзакции для кассового чека
 

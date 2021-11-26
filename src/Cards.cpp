@@ -1,5 +1,7 @@
 #include "Cards.h"
 
+static const std::string LOGFILENAME = "TestExtDll.log";
+
 Token Cards::KeyValueToken(std::string& line, char delimiter) {
 	std::stringstream ss;
 	std::string key = "";
@@ -56,7 +58,7 @@ std::string Cards::CardsToString() const{
 
 int Cards::GetCard(std::string&& Card, CardInfo* info) {
 	if (cards.count(Card) > 0) {
-		Logger logger("GetCard found");
+		Logger logger(LOGFILENAME, "GetCard found");
 		if (GetCardData(Card, "isDeleted") == "1" || GetCardData(Card, "isDeleted") == "true") {
 			info->isDeleted = true;
 		}
@@ -98,7 +100,7 @@ int Cards::GetCard(std::string&& Card, CardInfo* info) {
 		return 0;
 	}
 	else {
-		Logger logger("GetCard not found");
+		Logger logger(LOGFILENAME, "GetCard not found");
 		logger.AddLog(Card);
 	}
 	return 1;
@@ -145,7 +147,7 @@ std::string str_tolower(std::string s) {
 }
 
 void Cards::FindOwnerByNamePart(std::string&& Name, CBFind CBfind, void* Back) {
-	Logger logger("FindOwnerByNamePart");
+	Logger logger(LOGFILENAME, "FindOwnerByNamePart");
 	int i = 0;
 	for (auto& card : cards) {
 		for (auto& token : card.second) {
@@ -229,7 +231,7 @@ void Cards::SaveCards() const{
 }
 
 void Cards::UpdateCards(DWORD Count, Transaction* Transactions[]) {
-	Logger logger("UpdateCards");
+	Logger logger(LOGFILENAME, "UpdateCards");
 	for (size_t i = 0; i < Count; ++i) {
 		Transaction* tr = Transactions[i];
 		std::string Card;

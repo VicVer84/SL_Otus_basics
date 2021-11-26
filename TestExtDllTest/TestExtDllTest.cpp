@@ -1,33 +1,69 @@
-#include "LibFunc.h"
-#include "Structs.h"
+#include "TestExtDllTest.h"
 
-#include <windows.h>
-#include <gtest/gtest.h>
+//callback function using same convention as in TestExtDll
+void __stdcall CBFind_(void* vec, DWORD count, INT64 card, const char* name) {
+	FindInfo info;
+	info.Card = card;
+	info.Name = name;
+	std::vector<FindInfo> &myVec = *reinterpret_cast<std::vector<FindInfo>*>(vec);
+	myVec.push_back(info);
+}
 
 TEST(TestExtDllTest, Init) {
+	Logger logger(TESTEXTDLLTEST, "Test Init");
 	const std::string expected = "Init";
+
 	std::stringstream ss;
-	TestExtDll::Init(ss);
+	
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ss);
+	
+	TestExtDll.Init(ss);
+
+	logger.AddLog(ss.str());
 
 	ASSERT_EQ(ss.str(), expected);
 }
 
 TEST(TestExtDllTest, Done) {
+	Logger logger(TESTEXTDLLTEST, "Test Done");
 	const std::string expected = "Done";
+
+	
 	std::stringstream ss;
-	TestExtDll::Done(ss);
+
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ss);
+
+	TestExtDll.Done(ss);
+
+	logger.AddLog(ss.str());
 
 	ASSERT_EQ(ss.str(), expected);
 }
 
 TEST(TestExtDllTest, GetCardInfoEx) {
-	CardInfo info{};
-	CardInfo expected{};
+	Logger logger(TESTEXTDLLTEST, "Test GetCardInfoEx");
+	auto& ofs = logger.GetStream();
+	std::stringstream ss;
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ofs);
+
 	INT64 Card = 1;
-	int result = TestExtDll::GetCardInfoEx(&info, Card);
+	DWORD Restaurant = 1;
+	DWORD UnitNo = 1;	
+	CardInfo info{};
+		info.size = 1164;
+	const char* InpBuf = "";
+	DWORD InpLen = 0;
+	WORD InpKind = 0;
+	const char* OutBuf = "";
+	DWORD OutLen = 0;
+	WORD OutKind = 0;	
+	
+	
+	int result = TestExtDll.GetCardInfoEx(Card, Restaurant, UnitNo, &info, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 	
 	ASSERT_EQ(result, 0);
 
+	CardInfo expected{};
 	expected.size = 1164;
 	expected.isDeleted = 0;
 	expected.isNeedWithdraw = 0;
@@ -56,6 +92,11 @@ TEST(TestExtDllTest, GetCardInfoEx) {
 }
 
 TEST(TestExtDllTest, GetCardImageEx) {
+	Logger logger(TESTEXTDLLTEST, "Test GetCardImageEx");
+	auto& ofs = logger.GetStream();
+
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ofs);
+
 	std::set<std::string> expected = {
 		".\\Images\\Gannibal.jpeg",
 		".\\Images\\God.jpeg",
@@ -64,9 +105,10 @@ TEST(TestExtDllTest, GetCardImageEx) {
 	};
 
 	CardImageInfo info{};
+	info.size = 258;
 	INT64 Card = 1;
 
-	int result = TestExtDll::GetCardImageEx(&info, Card);
+	int result = TestExtDll.GetCardImageEx(Card , &info, ofs);
 	ASSERT_EQ(result, 0);
 
 	std::stringstream ss;
@@ -74,15 +116,29 @@ TEST(TestExtDllTest, GetCardImageEx) {
 	auto it = expected.find(ss.str());
 	ASSERT_TRUE(expected.find(ss.str()) != expected.end());
 }
+
 TEST(TestExtDllTest, FindCardsL) {
+	Logger logger(TESTEXTDLLTEST, "Test FindCardsL");
+	auto& ofs = logger.GetStream();
+
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ofs);
+
 	std::vector<FindInfo> vec;
 	std::string Findstr = "Owner";
-	vec = TestExtDll::FindCardsL(Findstr);
+
+	TestExtDll.FindCardsL(Findstr.c_str(), &CBFind_, &vec, ofs);
+
+	const char* InpBuf = "";
+	DWORD InpLen = 0;
+	WORD InpKind = 0;
+	const char* OutBuf = "";
+	DWORD OutLen = 0;
+	WORD OutKind = 0;
 
 	for (size_t i = 0; i < vec.size(); ++i) {
 		CardInfo info{};
 		INT64 Card = vec[i].Card;
-		TestExtDll::GetCardInfoEx(&info, Card);
+		TestExtDll.GetCardInfoEx(Card, 1, 1, &info, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 		std::stringstream ss;
 		ss << info.cardOwner;
 		ASSERT_EQ(ss.str(), vec[i].Name);
@@ -90,19 +146,34 @@ TEST(TestExtDllTest, FindCardsL) {
 }
 
 TEST(TestExtDllTest, FindEmail) {
+	Logger logger(TESTEXTDLLTEST, "Test FindEmail");
+	auto& ofs = logger.GetStream();
+
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ofs);
+
 	std::string Findstr = "test@test.ru";
 	EmailInfo einfo{};
-	int result = TestExtDll::FindEmail(Findstr, &einfo);
+	int result = TestExtDll.FindEmail(Findstr.c_str(), &einfo, ofs);
 	ASSERT_EQ(result, 0);
 
 	CardInfo info{};
-	TestExtDll::GetCardInfoEx(&info, einfo.cardNum);
+	info.size = 54;
+	DWORD OutLen = 0;
+	WORD OutKind = 0;
+
+	result = TestExtDll.GetCardInfoEx(einfo.cardNum, 1, 1, &info, "",0,0,"", OutLen, OutKind, ofs);
+	ASSERT_EQ(result, 0);
 
 	ASSERT_TRUE(memcmp(einfo.OwnerName, info.cardOwner, sizeof(einfo.OwnerName)));
 	ASSERT_EQ(einfo.accountNum, info.accountNum);
 }
 
 TEST(TestExtDllTest, TransactionsEx) {
+	Logger logger(TESTEXTDLLTEST, "Test TransactionsEx");
+	auto& ofs = logger.GetStream();
+
+	LoadExtDll TestExtDll(DLLNAME.c_str(), ofs);
+
 	INT64 Card = 1;
 	INT64 sum1 = 60;
 	INT64 sum2 = 10;
@@ -169,23 +240,41 @@ TEST(TestExtDllTest, TransactionsEx) {
 	transactions[0] = &tr1;
 	transactions[1] = &tr2;
 
+	const char* InpBuf = "";
+	DWORD InpLen = 0;
+	WORD InpKind = 0;
+	const char* OutBuf = "";
+	DWORD OutLen = 0;
+	WORD OutKind = 0;
+
 	CardInfo expected{};
-	int result = TestExtDll::GetCardInfoEx(&expected, Card);
+	int result = TestExtDll.GetCardInfoEx(Card, 1, 1, &expected, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 	ASSERT_EQ(result, 0);
-	expected.amountOnSubAccount1 += sum1;
+	expected.amountOnSubAccount1 += sum1; 
 	expected.amountOnSubAccount2 += sum2;
 
-	result = TestExtDll::TransactionsEx(2, transactions);
+	result = TestExtDll.TransactionsEx(2, transactions, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 	ASSERT_EQ(result, 0);
 
 	CardInfo info{};
-	result = TestExtDll::GetCardInfoEx(&info, Card);
+	result = TestExtDll.GetCardInfoEx(Card, 1, 1, &info, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 	ASSERT_EQ(result, 0);
 	ASSERT_EQ(info.amountOnSubAccount1, expected.amountOnSubAccount1);
 	ASSERT_EQ(info.amountOnSubAccount2, expected.amountOnSubAccount2);
 }
 
+
 int main (int argc, char** argv) {
+	std::ifstream ifs("TestExtDllTest.ini");
+	std::string str;
+	std::cout << ifs.is_open();
+	if (ifs.is_open()) {
+		std::getline(ifs, str);
+		if (str.size() <= 40) {
+			DLLNAME = str;
+		}
+	}
+	std::cout << "Loaded " << DLLNAME << ", to change dll name write it in TestExtDllTest.ini";
 	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }

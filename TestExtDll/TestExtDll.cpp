@@ -1,8 +1,9 @@
 #include "TestExtDll.h"
 
+static const std::string LOGFILENAME = "TestExtDll.log";
 
 void Init() {
-	Logger logger("Init");
+	Logger logger(LOGFILENAME,"Init");
 	logger.AddLogCrit("Call Init");
 	std::ifstream ifs("Cards.txt");
 	if (!ifs) {
@@ -13,7 +14,7 @@ void Init() {
 }
 
 void Done() {
-	Logger logger("Done");
+	Logger logger(LOGFILENAME, "Done");
 	logger.AddLogCrit("Call Done");
 }
 
@@ -24,7 +25,7 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 					CardInfo* info, const char* InpBuf, DWORD InpLen, WORD InpKind,
 					const char* OutBuf, DWORD &OutLen, WORD &OutKind)
 {
-	Logger logger("GetCardInfoEx");
+	Logger logger(LOGFILENAME, "GetCardInfoEx");
 	logger.AddLog("CardInfo size: " + std::to_string(sizeof(CardInfo)));
 
 	Cards card('=');
@@ -47,9 +48,9 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 
 
 int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf, DWORD InpLen,
-					WORD InpKind, void* OutBuf, DWORD &OutLen, WORD &OutKind) 
+					WORD InpKind, const char* OutBuf, DWORD &OutLen, WORD &OutKind)
 {
-	Logger logger("TransactionsEx");
+	Logger logger(LOGFILENAME,"TransactionsEx");
 
 	logger.AddLog("Transaction size: " + std::to_string(sizeof(Transaction)));
 
@@ -68,7 +69,7 @@ int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf,
 }
 
 int GetCardImageEx(INT64 Card, CardImageInfo* info) {
-	Logger logger("GetCardImageEx");
+	Logger logger(LOGFILENAME, "GetCardImageEx");
 	logger.AddLog("CardImageInfo size: " + std::to_string(sizeof(CardImageInfo)));
 
 	std::string strings[4];
@@ -92,7 +93,7 @@ int GetCardImageEx(INT64 Card, CardImageInfo* info) {
 }
 
 int FindEmail(const char* Email, EmailInfo* emailInfo) {
-	Logger logger("FindEmail");
+	Logger logger(LOGFILENAME, "FindEmail");
 
 	Cards cards('=');
 
@@ -107,7 +108,7 @@ int FindEmail(const char* Email, EmailInfo* emailInfo) {
 
 
 void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
-	Logger logger("FindCardsL");
+	Logger logger(LOGFILENAME, "FindCardsL");
 	Cards cards('=');
 	cards.FindOwnerByNamePart(FindText, CBfind, Back);
 }

@@ -13,14 +13,14 @@ using namespace std::chrono;
 
 class Logger {
 public:
-	explicit Logger(std::string Method);
+	explicit Logger(const std::string LogFileName, std::string Method);
 
 	void AddLog(std::string Message);
 	void AddLogCrit(std::string Message);
-
+	std::ofstream& GetStream();
 	~Logger();
 private:
-	const std::string LogFileName = "TestExtDll.log";
+	const std::string logFileName;
 	std::string methodName;
 	std::ofstream ofs;
 	steady_clock::time_point start;

@@ -1,13 +1,15 @@
 #include "Logger.h"
 
-Logger::Logger(std::string MethodName) : start(steady_clock::now()), methodName(MethodName) {
+Logger::Logger(std::string LogFileName, std::string MethodName) 
+		: start(steady_clock::now()), 
+			methodName(MethodName), 
+			logFileName(LogFileName) {
+				
 	ofs.open(LogFileName, std::ios::app);
 	if (ofs) {
 		AddLogCrit(methodName);
 	}
 }
-
-
 
 void Logger::AddLog(std::string Message) {
 	if (!ofs) {
@@ -23,6 +25,10 @@ void Logger::AddLogCrit(std::string Message) {
 	}
 	ofs << PrintTimeNow();
 	ofs << " " << Message << std::endl;
+}
+
+std::ofstream& Logger::GetStream() {
+	return ofs;
 }
 
 Logger::~Logger() {
