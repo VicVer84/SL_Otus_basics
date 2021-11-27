@@ -1,13 +1,30 @@
 #include "TestDllInTheMid.h"
 
 static const std::string LOGFILENAME = "TestDllInTheMid.log";
-static const char DLLNAME[20] = "TestExtDll.dll";
+static const std::string INIFILENAME = "TestDllInTheMid.ini";
+std::string DLLNAME = "TestExtDll.dll";
 
 
 void Init() {
 	Logger logger(LOGFILENAME, "TestDllInTheMid::Init");
 	auto& ofs = logger.GetStream();
 	
+	std::ifstream ifs(INIFILENAME);
+	std::string str;
+	if (ifs) {
+		std::getline(ifs, str);
+		if (str.size() <= 40) {
+			DLLNAME = str;
+		}
+	}
+	else {
+		std::ofstream ini(INIFILENAME);		
+		ini << DLLNAME << std::endl;
+		ofs << INIFILENAME << " created" << std::endl;
+	}
+	ofs << "Loaded: " << DLLNAME << std::endl;
+
+
 	LoadExtDll TestExtDll(DLLNAME, ofs);
 	TestExtDll.Init(ofs);
 	

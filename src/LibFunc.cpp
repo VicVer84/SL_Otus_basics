@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 
-LoadExtDll::LoadExtDll(const char* DLLNAME, std::ostream& os) : hDLL(::LoadLibrary(DLLNAME)) {
+LoadExtDll::LoadExtDll(std::string DLLNAME, std::ostream& os) : hDLL(::LoadLibrary(DLLNAME.c_str())) {
 	if (!hDLL) {
 		os << "LoadExtDll ctor:: Could not load the dynamic library" << std::endl;
 	}

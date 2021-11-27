@@ -35,7 +35,7 @@ class LoadExtDll {
 private:
 	HINSTANCE hDLL;
 public:	
-	LoadExtDll(const char*, std::ostream&);
+	LoadExtDll(std::string, std::ostream&);
 	void AnyInfo();
 	void Done(std::ostream&);
 	void FindAccountsByKind();

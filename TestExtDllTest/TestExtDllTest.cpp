@@ -272,8 +272,13 @@ int main (int argc, char** argv) {
 		if (str.size() <= 40) {
 			DLLNAME = str;
 		}
+	} else {
+		std::ofstream ofs("TestExtDllTest.ini");
+		std::cout << "TestExtDllTest.ini created" << std::endl;
+		ofs << DLLNAME;
 	}
-	std::cout << "Loaded " << DLLNAME << ", to change dll name write it in TestExtDllTest.ini \n";
+	std::cout << "Loaded: " << DLLNAME << std::endl;
+
 	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
