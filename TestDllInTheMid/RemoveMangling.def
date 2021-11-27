@@ -1,0 +1,12 @@
+LIBRARY TestDllInTheMid
+EXPORTS
+	AnyInfo   @1
+	Done   @2
+	FindAccountsByKind   @3
+	FindCardsL   @4
+	FindEmail   @5
+	GetCardImageEx   @6
+	GetCardInfoEx   @7
+	GetDiscLevelInfoL   @8
+	Init   @9
+	TransactionsEx   @10

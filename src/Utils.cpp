@@ -90,16 +90,16 @@ std::string GetEmailInfo(const EmailInfo* einfo) {
 	return ss.str();
 }
 
-std::string InpBufToStr(const char* InpBuf, DWORD& InpLen) {
+std::string BufToStr(const char* Buf, DWORD& InpLen) {
 	std::stringstream ss;
-	ss << "InpBuf:\n";
+	ss << "Buf:\n";
 
 	char prev = '\r';
 	for (size_t i = 0; i < (size_t)InpLen; ++i) {
-		if (!((prev == '\r' && InpBuf[i] == '\n') || (prev == '\n' && InpBuf[i] == '\r'))) {
-			ss << InpBuf[i];
+		if (!((prev == '\r' && Buf[i] == '\n') || (prev == '\n' && Buf[i] == '\r'))) {
+			ss << Buf[i];
 		}
-		prev = InpBuf[i];
+		prev = Buf[i];
 	}
 	return ss.str();
 }

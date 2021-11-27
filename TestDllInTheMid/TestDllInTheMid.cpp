@@ -5,7 +5,7 @@ static const std::string INIFILENAME = "TestDllInTheMid.ini";
 std::string DLLNAME = "TestExtDll.dll";
 
 
-void Init() {
+void __stdcall Init() {
 	Logger logger(LOGFILENAME, "TestDllInTheMid::Init");
 	auto& ofs = logger.GetStream();
 	
@@ -31,7 +31,7 @@ void Init() {
 	logger.AddLogCrit("Call Init TestDllInTheMid");
 }
 
-void Done() {
+void __stdcall Done() {
 	Logger logger(LOGFILENAME, "TestDllInTheMid::Done");
 	auto& ofs = logger.GetStream();
 
@@ -41,7 +41,7 @@ void Done() {
 	logger.AddLogCrit("Call Done TestDllInTheMid");
 }
 
-int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
+int __stdcall GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 					CardInfo* info, const char* InpBuf, DWORD InpLen, WORD InpKind,
 					const char* OutBuf, DWORD &OutLen, WORD &OutKind) {
 		
@@ -56,21 +56,23 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 	logger.AddLog("UnitNo: " + std::to_string(UnitNo));
 	logger.AddLog("InpLen: " + std::to_string(InpLen));
 	logger.AddLog("InpKind: " + std::to_string(InpKind));	
-	logger.AddLogCrit("InpBuf: \n" + InpBufToStr(InpBuf, InpLen));
+	logger.AddLogCrit("InpBuf: \n" + BufToStr(InpBuf, InpLen));
+	logger.GetStream() << "OutBuf size: " << OutLen << "OutBuf addres: " << &OutBuf << std::endl;
+	logger.GetStream() << "Address of info: " << &info << " sizeof info: " << sizeof(*info) << std::endl;
 
 	int result = TestExtDll.GetCardInfoEx(Card, Restaurant, UnitNo, info, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 	
 	logger.AddLog("-------- After Call ---------");
 	logger.AddLog("result: " + std::to_string(result));
 	logger.AddLog(GetCardInfo(info));
-	logger.AddLogCrit("OutBuf: \n" + InpBufToStr(OutBuf, OutLen));
+	logger.AddLogCrit("OutBuf: \n" + BufToStr(OutBuf, OutLen));
 	logger.AddLog(std::to_string(OutKind));
 	
 	return result;
 }
 
 
-int TransactionsEx(DWORD Count, Transaction* transactions[], const char* InpBuf, DWORD InpLen,
+int __stdcall TransactionsEx(DWORD Count, Transaction* transactions[], const char* InpBuf, DWORD InpLen,
 					WORD InpKind, const char* OutBuf, DWORD &OutLen, WORD &OutKind) 
 {
 	Logger logger(LOGFILENAME, "TransactionsEx");
@@ -79,24 +81,26 @@ int TransactionsEx(DWORD Count, Transaction* transactions[], const char* InpBuf,
 	LoadExtDll TestExtDll(DLLNAME, ofs);
 	logger.AddLog("-------- Before Call ---------");
 	
-	logger.AddLogCrit("InpBuf: \n" + InpBufToStr(InpBuf, InpLen));
+	logger.AddLogCrit("InpBuf: \n" + BufToStr(InpBuf, InpLen));
 	logger.AddLog("Count: " + std::to_string(Count));
 	for (size_t i = 0; i < Count; i++) {
 		Transaction* tr = transactions[i];
 		logger.AddLog("Transaction num:" + std::to_string(i));
 		logger.AddLog(GetTransaction(tr));
 	}
+	logger.GetStream() << "OutBuf addres: " << &OutBuf << std::endl;
 	
 	int result = TestExtDll.TransactionsEx(Count, transactions, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind, ofs);
 	
 	logger.AddLog("-------- After Call ---------");
-	logger.AddLogCrit("OutBuf: \n" + InpBufToStr(OutBuf, OutLen));
+	logger.GetStream() << "OutBuf addres: " << &OutBuf << std::endl;
+	logger.AddLogCrit("OutBuf: \n" + BufToStr(OutBuf, OutLen));
 	logger.AddLog(std::to_string(OutKind));
 	
 	return result;
 }
 
-int GetCardImageEx(INT64 Card, CardImageInfo* info) {
+int __stdcall GetCardImageEx(INT64 Card, CardImageInfo* info) {
 	Logger logger(LOGFILENAME, "GetCardImageEx");
 	auto& ofs = logger.GetStream();
 
@@ -109,7 +113,7 @@ int GetCardImageEx(INT64 Card, CardImageInfo* info) {
 	return result;
 }
 
-int FindEmail(const char* Email, EmailInfo* emailInfo) {
+int __stdcall FindEmail(const char* Email, EmailInfo* emailInfo) {
 	Logger logger(LOGFILENAME, "FindEmail");
 	auto& ofs = logger.GetStream();
 
@@ -123,7 +127,7 @@ int FindEmail(const char* Email, EmailInfo* emailInfo) {
 }
 
 
-void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
+void __stdcall FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
 	Logger logger(LOGFILENAME, "FindCardsL");
 	auto& ofs = logger.GetStream();
 
@@ -132,10 +136,10 @@ void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
 	TestExtDll.FindCardsL(FindText, CBfind, Back, ofs);
 }
 
-int GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo* info) {
+int __stdcall GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo* info) {
 	return 1;
 }
 
-void AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen) {}
+void __stdcall AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen) {}
 
-void FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back) {}
+void __stdcall FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back) {}

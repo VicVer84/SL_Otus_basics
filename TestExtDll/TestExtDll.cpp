@@ -2,7 +2,7 @@
 
 static const std::string LOGFILENAME = "TestExtDll.log";
 
-void Init() {
+void __stdcall Init() {
 	Logger logger(LOGFILENAME,"Init");
 	logger.AddLogCrit("Call Init");
 	std::ifstream ifs("Cards.txt");
@@ -13,7 +13,7 @@ void Init() {
 	}
 }
 
-void Done() {
+void __stdcall Done() {
 	Logger logger(LOGFILENAME, "Done");
 	logger.AddLogCrit("Call Done");
 }
@@ -21,7 +21,7 @@ void Done() {
 
 std::string xml;
 
-int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
+int __stdcall GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 					CardInfo* info, const char* InpBuf, DWORD InpLen, WORD InpKind,
 					const char* OutBuf, DWORD &OutLen, WORD &OutKind)
 {
@@ -37,7 +37,7 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 	logger.AddLog("InpLen: " + std::to_string(InpLen));
 	logger.AddLog("InpKind: " + std::to_string(InpKind));
 	
-	logger.AddLogCrit(InpBufToStr(InpBuf, InpLen));
+	logger.AddLogCrit(BufToStr(InpBuf, InpLen));
 
 	int result = card.GetCard(std::to_string(Card), info);
 	
@@ -47,14 +47,14 @@ int __cdecl GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo,
 }
 
 
-int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf, DWORD InpLen,
+int __stdcall TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf, DWORD InpLen,
 					WORD InpKind, const char* OutBuf, DWORD &OutLen, WORD &OutKind)
 {
 	Logger logger(LOGFILENAME,"TransactionsEx");
 
 	logger.AddLog("Transaction size: " + std::to_string(sizeof(Transaction)));
 
-	logger.AddLogCrit(InpBufToStr(InpBuf, InpLen));
+	logger.AddLogCrit(BufToStr(InpBuf, InpLen));
 
 	logger.AddLog("Count: " + std::to_string(Count));
 
@@ -68,7 +68,7 @@ int TransactionsEx(DWORD Count, Transaction* Transactions[], const char* InpBuf,
 	return 0;
 }
 
-int GetCardImageEx(INT64 Card, CardImageInfo* info) {
+int __stdcall GetCardImageEx(INT64 Card, CardImageInfo* info) {
 	Logger logger(LOGFILENAME, "GetCardImageEx");
 	logger.AddLog("CardImageInfo size: " + std::to_string(sizeof(CardImageInfo)));
 
@@ -92,7 +92,7 @@ int GetCardImageEx(INT64 Card, CardImageInfo* info) {
 	return 0;
 }
 
-int FindEmail(const char* Email, EmailInfo* emailInfo) {
+int __stdcall FindEmail(const char* Email, EmailInfo* emailInfo) {
 	Logger logger(LOGFILENAME, "FindEmail");
 
 	Cards cards('=');
@@ -107,16 +107,16 @@ int FindEmail(const char* Email, EmailInfo* emailInfo) {
 }
 
 
-void FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
+void __stdcall FindCardsL(const char* FindText, CBFind CBfind, void* Back) {
 	Logger logger(LOGFILENAME, "FindCardsL");
 	Cards cards('=');
 	cards.FindOwnerByNamePart(FindText, CBfind, Back);
 }
 
-int GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo* info) {
+int __stdcall GetDiscLevelInfoL(int32_t  Account, DiscLevelInfo* info) {
 	return 1;
 }
 
-void AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen) {}
+void __stdcall AnyInfo(const char* InpBuf, int32_t InpLen, void* OutBuf, int32_t OutLen) {}
 
-void FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back) {}
+void __stdcall FindAccountsByKind(int Kind, const char* FindText, CBFind CBfind, void* Back) {}

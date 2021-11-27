@@ -24,12 +24,12 @@ dumpbin /exports
 */
 typedef void(__stdcall *CBFind)(void*, DWORD, INT64, const char*);
 
-typedef void (*v_ptr)();
-typedef int (*CardInfo_ptr)(INT64, DWORD, DWORD, CardInfo*, const char*, DWORD, WORD, const char*, DWORD&, WORD&);
-typedef int (*CardImage_ptr)(INT64, CardImageInfo*);
-typedef void (*FindCardsL_ptr)(const char*, CBFind, void*);
-typedef int (*FindEmail_ptr)(const char*, EmailInfo*);
-typedef int (*TransactionsEx_ptr)(DWORD, Transaction* Transactions[], const char*, DWORD, WORD, const char*, DWORD&, WORD&);
+typedef void (__stdcall *v_ptr)();
+typedef int (__stdcall *CardInfo_ptr)(INT64, DWORD, DWORD, CardInfo*, const char*, DWORD, WORD, const char*, DWORD&, WORD&);
+typedef int (__stdcall *CardImage_ptr)(INT64, CardImageInfo*);
+typedef void (__stdcall *FindCardsL_ptr)(const char*, CBFind, void*);
+typedef int (__stdcall *FindEmail_ptr)(const char*, EmailInfo*);
+typedef int (__stdcall *TransactionsEx_ptr)(DWORD, Transaction* Transactions[], const char*, DWORD, WORD, const char*, DWORD&, WORD&);
 
 class LoadExtDll {
 private:

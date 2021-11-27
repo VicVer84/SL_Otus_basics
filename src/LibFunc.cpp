@@ -43,9 +43,8 @@ int LoadExtDll::GetCardInfoEx(INT64 Card, DWORD Restaurant, DWORD UnitNo, CardIn
 		os << "LoadExtDll::GetCardInfoEx:: Could not locate the function" << std::endl;
 		return -1;
 	}			
-		
 	int result = getCardInfoEx(Card, Restaurant, UnitNo, info, InpBuf, InpLen, InpKind, OutBuf, OutLen, OutKind);
-
+	
 	return result;
 }
 

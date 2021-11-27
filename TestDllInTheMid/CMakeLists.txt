@@ -11,6 +11,7 @@ add_library(TestDllInTheMid SHARED
 	${CMAKE_SOURCE_DIR}/src/Logger.cpp
 	${CMAKE_SOURCE_DIR}/src/Utils.cpp
 	${CMAKE_SOURCE_DIR}/TestDllInTheMid/TestDllInTheMid.h
+	${CMAKE_SOURCE_DIR}/TestDllInTheMid/RemoveMangling.def
 	${CMAKE_SOURCE_DIR}/src/LibFunc.h
 	${CMAKE_SOURCE_DIR}/src/Logger.h
 	${CMAKE_SOURCE_DIR}/src/Utils.h
@@ -19,5 +20,7 @@ add_library(TestDllInTheMid SHARED
 
 
 set_target_properties(TestDllInTheMid PROPERTIES COMPILE_FLAGS "/MT" LINK_FLAGS "/DLL" )
+set_target_properties(TestDllInTheMid PROPERTIES LINK_FLAGS "/DEF:RemoveMangling.def")
+
 
 set_target_properties(TestDllInTheMid PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
