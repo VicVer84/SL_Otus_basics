@@ -35,9 +35,9 @@ jobs:
       - name: ls
         run: ls -la
       - name: cmake ..
-        run: cmake ..
+        run: /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build/cmake ..
       - name: cmake -- build .
-        run: cmake -- build .
+        run: /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build/cmake -- build .
                                 
       # Runs a set of commands using the runners shell
       - name: Run a test
