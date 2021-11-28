@@ -25,20 +25,34 @@ jobs:
                     
       
       - name: CD M1L9
-        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9
-      - name: mkdir Build
-        run: mkdir /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
-      - name: ls
-        run: ls -la
-      - name: cd Build
-        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
-      - name: ls
-        run: ls -la
-      - name: cmake ..
-        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake ..
-      - name: cmake -- build .
-        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake --build .
-                                
+        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9 && mkdir Build && cd Build && cmake .. && cmake --build .
+      #- name: mkdir Build
+      #  run: mkdir /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
+      #- name: ls
+      #  run: ls -la
+      #- name: cd Build
+      #  run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
+      #- name: ls
+      #  run: ls -la
+      #- name: cmake ..
+      #  run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake ..
+      #- name: cmake -- build .
+      #  run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake --build .
+      - name: ls /home
+        run: ls /home
+      - name: ls /home/runner
+        run: ls /home/runner
+      - name: ls /home/runner/work
+        run: ls /home/runner/work
+      - name: ls /home/runner/work/SL_Otus_basics
+        run: ls /home/runner/work/SL_Otus_basics 
+      - name: ls /home/runner/work/SL_Otus_basics/SL_Otus_basics
+        run: ls /home/runner/work/SL_Otus_basics/SL_Otus_basics
+      - name: ls /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9
+        run: ls /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9
+      - name: ls /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
+        run: ls /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
+        
       # Runs a set of commands using the runners shell
       - name: Run a test
         run: /home/runner/work/SL_Otus_basics/SL_Otus_basics/bin/statistics.test
