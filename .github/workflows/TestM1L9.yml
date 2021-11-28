@@ -41,4 +41,4 @@ jobs:
                                 
       # Runs a set of commands using the runners shell
       - name: Run a test
-        run: /home/runner/work/SL_Otus_basics/SL_Otus_basics/bin/statistics.test.exe
+        run: /home/runner/work/SL_Otus_basics/SL_Otus_basics/bin/statistics.test
