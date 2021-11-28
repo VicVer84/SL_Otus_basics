@@ -37,7 +37,7 @@ jobs:
       - name: cmake ..
         run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake ..
       - name: cmake -- build .
-        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake -- build .
+        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build && cmake --build .
                                 
       # Runs a set of commands using the runners shell
       - name: Run a test
