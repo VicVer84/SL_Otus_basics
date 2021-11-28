@@ -27,7 +27,7 @@ jobs:
       - name: CD M1L9
         run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9
       - name: mkdir Build
-        run: mkdir Build
+        run: mkdir /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
       - name: ls
         run: ls -la
       - name: cd Build
