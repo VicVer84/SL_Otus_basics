@@ -25,10 +25,11 @@ jobs:
                     
       
       - name: CD M1L9
-        run: cd M1L9
+        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9
       - name: mkdir and cd
-        run: mkdir Build && cd "$_"
-        
+        run: mkdir Build && cd "$_"        
+      - name: ls
+        run: ls - la
       - name: cmake ..
         run: cmake ..
       - name: cmake -- build .
