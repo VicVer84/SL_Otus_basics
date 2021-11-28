@@ -24,11 +24,16 @@ jobs:
           ref: M1L9
                     
       
-      - name: Run LS
-        run: ls -la
-
+      - name: CD M1L9
+        run: cd M1L9
+      - name: mkdir and cd
+        run: mkdir Build && cd "$_"
+        
+      - name: cmake ..
+        run: cmake ..
+      - name: cmake -- build .
+        run: cmake -- build .
+                                
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Run a test
+        run: ../bin/statistics.test.exe
