@@ -29,7 +29,7 @@ jobs:
       - name: mkdir Build
         run: mkdir Build
       - name: cd Build
-        run: cd Build
+        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics/M1L9/Build
       - name: ls
         run: ls -la
       - name: cmake ..
