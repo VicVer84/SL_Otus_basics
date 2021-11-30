@@ -14,26 +14,27 @@ FetchContent_MakeAvailable(googletest)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-#target_include_directories(TestMyVector PRIVATE include)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(TestMyVector
     TestMyVector.cpp
-	MyVector.h
+	${CMAKE_SOURCE_DIR}/src/MyVector.h
+	${CMAKE_SOURCE_DIR}/src/TestItem.h
 )
 
 add_executable(Test
     Test.cpp
-	MyVector.h
+	${CMAKE_SOURCE_DIR}/src/MyVector.h
 )
 
 add_executable(TestMySLList
     TestMySLList.cpp
-	MySLList.h
+	${CMAKE_SOURCE_DIR}/src/MySLList.h
 )
 
 add_executable(TestMyDLList
     TestMyDLList.cpp
-	MyDLList.h
+	${CMAKE_SOURCE_DIR}/src/MyDLList.h
 )
 
 target_link_libraries(TestMyVector gtest_main)
@@ -41,7 +42,7 @@ target_link_libraries(TestMySLList gtest_main)
 target_link_libraries(TestMyDLList gtest_main)
 
 
-set_target_properties(TestMyVector PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(Test PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(TestMyVector PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(TestMySLList PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(TestMyDLList PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)

@@ -1,0 +1,23 @@
+name: TestM1L9
+
+on:
+  push:
+    branches: [ M1L13 ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: M1L13
+                    
+      
+      - name: Build
+        run: cd /home/runner/work/SL_Otus_basics/SL_Otus_basics && mkdir Build && cd Build && cmake .. && cmake --build .
+        
+      - name: Run tests
+        run: /home/runner/work/SL_Otus_basics/SL_Otus_basics/bin/statistics.test
