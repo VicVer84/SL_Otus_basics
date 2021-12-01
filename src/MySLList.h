@@ -8,8 +8,13 @@ public:
         Node* next = nullptr;
     };
 
+    
 	MySLList() : head_(nullptr), size_(0) {}
-	
+
+    MySLList(MySLList&& other);
+    MySLList<T>& operator=(const MySLList& other);
+    MySLList<T>& operator=(MySLList&& other) noexcept;
+
     ~MySLList();
 
     void push_front(const T& value);
@@ -22,15 +27,51 @@ public:
     Node* getHead() { return head_; }
     const Node* getHead() const { return head_; }
 private:
+    void release();
     Node* head_;
 	size_t size_;
 };
 
 template <typename T>
+MySLList<T>::MySLList(MySLList&& other) : head_(other.head_)
+                                        , size_(other.size_) {
+    other.head_ = nullptr;
+    other.size_ = 0;
+}
+
+template <typename T>
+MySLList<T>& MySLList<T>::operator=(const MySLList& other) {
+    if (this != &other) {
+        this->release();
+        MySLList<T> buf;
+        for (auto node = other.getHead(); node; node = node->next) {
+            buf.push_front(node->value);
+        }
+        for (auto node = buf.getHead(); node; node = node->next) {
+            push_front(node->value);
+        }
+    }
+    return *this;
+}
+
+template <typename T>
+MySLList<T>& MySLList<T>::operator=(MySLList&& other) noexcept {
+    if (this != &other) {
+        this->release(); // deleting every node;
+        head_ = std::move(other.head_);
+        size_ = other.size_;
+
+        other.head_ = nullptr; //other.head will be deleted along with list destructor
+        other.size_ = 0;
+    }
+    return *this;
+}
+
+template <typename T>
 void MySLList<T>::push_front(const T& value){
-    Node* new_head = new Node;
+    MySLList<T>::Node* new_head = new MySLList<T>::Node{};
 	new_head->value = value;
-	new_head->next = head_;       
+	new_head->next = head_;
     head_ = new_head;
 	size_++;
 }
@@ -74,6 +115,12 @@ void MySLList<T>::erase(Node* node){
 template <typename T>
 MySLList<T>::~MySLList(){
     while(head_ != nullptr){
+        pop_front();
+    }
+}
+template <typename T>
+void MySLList<T>::release() {
+    while (head_ != nullptr) {
         pop_front();
     }
 }

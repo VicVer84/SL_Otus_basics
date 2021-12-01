@@ -19,12 +19,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 add_executable(TestMyVector
     TestMyVector.cpp
 	${CMAKE_SOURCE_DIR}/src/MyVector.h
-	${CMAKE_SOURCE_DIR}/src/TestItem.h
-)
-
-add_executable(Test
-    Test.cpp
-	${CMAKE_SOURCE_DIR}/src/MyVector.h
 )
 
 add_executable(TestMySLList
@@ -42,7 +36,6 @@ target_link_libraries(TestMySLList gtest_main)
 target_link_libraries(TestMyDLList gtest_main)
 
 
-set_target_properties(Test PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(TestMyVector PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(TestMySLList PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 set_target_properties(TestMyDLList PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)

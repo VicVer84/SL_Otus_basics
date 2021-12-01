@@ -6,7 +6,24 @@
 #include <vector>
 #include <string>
 
-TEST(MyDLList, push_front) {
+TEST(MyDLList, test_creation) {
+	MyDLList<int> list;
+
+	ASSERT_EQ(list.size(), 0);
+}
+
+TEST(MyDLList, test_size) {
+	MyDLList<int> list;
+
+	for (int i = 0; i < 5; ++i) {
+		list.push_front(i);
+	}
+
+	ASSERT_EQ(list.size(), 5);
+}
+
+TEST(MyDLList, test_push_front) {
+	const std::vector<int> expected = { 3, 2, 1 };
 	MyDLList<int> list;
 	
 	list.push_front(1);	
@@ -16,10 +33,8 @@ TEST(MyDLList, push_front) {
 	ASSERT_EQ(list.front()->value, 2);
 	
 	list.push_front(3);	
-	ASSERT_EQ(list.front()->value, 3);
-		
+	ASSERT_EQ(list.front()->value, 3);			
 	
-	const std::vector<int> expected = {3, 2, 1};
 	std::vector<int> result;
 	for (auto node = list.front(); node; node = node->next) {
 		result.push_back(node->value);
@@ -28,7 +43,7 @@ TEST(MyDLList, push_front) {
 	ASSERT_EQ(list.size(), 3);
 }
 
-TEST(MyDLList, insert) {
+TEST(MyDLList, test_insert) {
 	MyDLList<std::string> list;
 
 	list.push_front("a");
